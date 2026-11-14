@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <rect width="500" height="500" fill="#ffffff"/>
+
+  <!-- Fondo decorativo -->
+  <path d="M60 110 C45 90 55 65 78 68 C92 48 122 56 124 80 C146 86 148 112 128 122 C108 146 76 138 72 118 C60 118 56 114 60 110 Z" fill="#ffffff" stroke="#333333" stroke-width="5"/>
+  <path d="M410 90 C420 68 448 66 458 86 C480 86 488 114 468 126 C470 150 442 160 426 142 C404 148 390 124 404 110 C398 102 402 94 410 90 Z" fill="#ffffff" stroke="#333333" stroke-width="5"/>
+  <path d="M80 300 C70 280 84 260 104 266 C116 246 144 254 146 276 C168 282 170 308 150 318 C134 340 104 332 100 312 C88 312 80 308 80 300 Z" fill="#ffffff" stroke="#333333" stroke-width="5"/>
+  <path d="M400 320 C392 300 408 282 426 290 C440 270 468 280 468 302 C490 310 488 336 466 344 C450 364 422 354 420 334 C408 334 400 328 400 320 Z" fill="#ffffff" stroke="#333333" stroke-width="5"/>
+
+  <!-- Corazones -->
+  <path d="M250 60 C250 40 280 32 292 50 C304 32 334 40 334 60 C334 84 292 108 292 108 C292 108 250 84 250 60 Z" fill="#ffffff" stroke="#333333" stroke-width="5"/>
+
+  <!-- Cuerpo -->
+  <ellipse cx="250" cy="385" rx="105" ry="82" fill="#ffffff" stroke="#333333" stroke-width="6"/>
+  <ellipse cx="145" cy="385" rx="36" ry="20" fill="#ffffff" stroke="#333333" stroke-width="6" transform="rotate(24 145 385)"/>
+  <ellipse cx="355" cy="385" rx="36" ry="20" fill="#ffffff" stroke="#333333" stroke-width="6" transform="rotate(-24 355 385)"/>
+  <ellipse cx="200" cy="452" rx="38" ry="19" fill="#ffffff" stroke="#333333" stroke-width="6"/>
+  <ellipse cx="300" cy="452" rx="38" ry="19" fill="#ffffff" stroke="#333333" stroke-width="6"/>
+
+  <!-- Orejas -->
+  <path d="M140 145 C116 98 122 62 146 50 C174 66 192 94 204 122 Z" fill="#ffffff" stroke="#333333" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M360 145 C384 98 378 62 354 50 C326 66 308 94 296 122 Z" fill="#ffffff" stroke="#333333" stroke-width="6" stroke-linejoin="round"/>
+
+  <!-- Cabeza -->
+  <ellipse cx="250" cy="200" rx="140" ry="108" fill="#ffffff" stroke="#333333" stroke-width="6"/>
+
+  <!-- Ojos -->
+  <ellipse cx="205" cy="205" rx="11" ry="16" fill="#ffffff" stroke="#333333" stroke-width="5"/>
+  <ellipse cx="295" cy="205" rx="11" ry="16" fill="#ffffff" stroke="#333333" stroke-width="5"/>
+  <circle cx="205" cy="205" r="5" fill="#333333"/>
+  <circle cx="295" cy="205" r="5" fill="#333333"/>
+
+  <!-- Nariz -->
+  <ellipse cx="250" cy="240" rx="16" ry="11" fill="#ffffff" stroke="#333333" stroke-width="4"/>
+
+  <!-- Bigotes -->
+  <g fill="none" stroke="#333333" stroke-width="5" stroke-linecap="round">
+    <path d="M150 220 L82 206"/>
+    <path d="M149 236 L79 236"/>
+    <path d="M151 252 L84 266"/>
+    <path d="M350 220 L418 206"/>
+    <path d="M351 236 L421 236"/>
+    <path d="M349 252 L416 266"/>
+  </g>
+
+  <!-- Moño grande -->
+  <g transform="translate(130 80) rotate(-12)">
+    <path d="M6 28 C-42 -8 -78 30 -36 54 C-68 80 -30 108 6 64 Z" fill="#ffffff" stroke="#333333" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M30 28 C78 -8 114 30 72 54 C104 80 66 108 30 64 Z" fill="#ffffff" stroke="#333333" stroke-width="6" stroke-linejoin="round"/>
+    <circle cx="18" cy="46" r="17" fill="#ffffff" stroke="#333333" stroke-width="5"/>
+  </g>
+
+  <!-- Vestido -->
+  <path d="M190 315 C190 345 170 440 170 440 C210 462 290 462 330 440 C330 440 310 345 310 315 C290 330 210 330 190 315 Z" fill="#ffffff" stroke="#333333" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M205 330 L215 430" fill="none" stroke="#333333" stroke-width="4"/>
+  <path d="M250 330 L250 438" fill="none" stroke="#333333" stroke-width="4"/>
+  <path d="M295 330 L285 430" fill="none" stroke="#333333" stroke-width="4"/>
+
+  <!-- Estrellas -->
+  <path d="M100 210 L108 230 L130 232 L113 247 L118 268 L100 256 L82 268 L87 247 L70 232 L92 230 Z" fill="#ffffff" stroke="#333333" stroke-width="4"/>
+  <path d="M400 210 L408 230 L430 232 L413 247 L418 268 L400 256 L382 268 L387 247 L370 232 L392 230 Z" fill="#ffffff" stroke="#333333" stroke-width="4"/>
+</svg>

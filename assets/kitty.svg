@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="Gatita kawaii con moño">
+  <defs>
+    <linearGradient id="bodyShade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#fff6fa"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sombra -->
+  <ellipse cx="200" cy="382" rx="96" ry="12" fill="#f3c4d8" opacity="0.55"/>
+
+  <!-- Cuerpo -->
+  <ellipse cx="200" cy="308" rx="86" ry="68" fill="url(#bodyShade)" stroke="#3a2a35" stroke-width="6"/>
+  <!-- Brazos -->
+  <ellipse cx="118" cy="308" rx="32" ry="18" fill="#ffffff" stroke="#3a2a35" stroke-width="6" transform="rotate(22 118 308)"/>
+  <ellipse cx="282" cy="308" rx="32" ry="18" fill="#ffffff" stroke="#3a2a35" stroke-width="6" transform="rotate(-22 282 308)"/>
+  <!-- Pies -->
+  <ellipse cx="158" cy="368" rx="33" ry="17" fill="#ffffff" stroke="#3a2a35" stroke-width="6"/>
+  <ellipse cx="242" cy="368" rx="33" ry="17" fill="#ffffff" stroke="#3a2a35" stroke-width="6"/>
+
+  <!-- Orejas -->
+  <path d="M108 112 C88 72 92 44 112 34 C136 48 152 72 162 94 Z" fill="#ffffff" stroke="#3a2a35" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M292 112 C312 72 308 44 288 34 C264 48 248 72 238 94 Z" fill="#ffffff" stroke="#3a2a35" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M118 102 C105 76 108 60 115 55 C128 64 139 80 146 94 Z" fill="#ffd3e2"/>
+  <path d="M282 102 C295 76 292 60 285 55 C272 64 261 80 254 94 Z" fill="#ffd3e2"/>
+
+  <!-- Cabeza -->
+  <ellipse cx="200" cy="150" rx="113" ry="88" fill="url(#bodyShade)" stroke="#3a2a35" stroke-width="6"/>
+
+  <!-- Ojos -->
+  <ellipse cx="163" cy="155" rx="9" ry="13" fill="#2a1e28"/>
+  <ellipse cx="237" cy="155" rx="9" ry="13" fill="#2a1e28"/>
+  <circle cx="166" cy="151" r="3" fill="#ffffff"/>
+  <circle cx="240" cy="151" r="3" fill="#ffffff"/>
+
+  <!-- Nariz -->
+  <ellipse cx="200" cy="184" rx="13" ry="9" fill="#ffcf5c" stroke="#3a2a35" stroke-width="3"/>
+
+  <!-- Bigotes -->
+  <g fill="none" stroke="#3a2a35" stroke-width="5" stroke-linecap="round">
+    <path d="M120 168 L70 158"/>
+    <path d="M119 180 L67 180"/>
+    <path d="M121 192 L72 202"/>
+    <path d="M280 168 L330 158"/>
+    <path d="M281 180 L333 180"/>
+    <path d="M279 192 L328 202"/>
+  </g>
+
+  <!-- Mejillas -->
+  <circle cx="138" cy="196" r="12" fill="#ffd6e7" opacity="0.85"/>
+  <circle cx="262" cy="196" r="12" fill="#ffd6e7" opacity="0.85"/>
+
+  <!-- Moño -->
+  <g transform="translate(112 56) rotate(-14)">
+    <path d="M4 22 C-34 -6 -62 24 -28 42 C-54 62 -24 84 4 50 Z" fill="#ff4d6d" stroke="#b3243c" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M22 22 C60 -6 88 24 54 42 C80 62 50 84 22 50 Z" fill="#ff4d6d" stroke="#b3243c" stroke-width="5" stroke-linejoin="round"/>
+    <circle cx="13" cy="36" r="13" fill="#ff8fa8" stroke="#b3243c" stroke-width="4"/>
+    <circle cx="9" cy="32" r="4" fill="#ffffff" opacity="0.7"/>
+  </g>
+</svg>
