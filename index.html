@@ -4475,6 +4475,50 @@ body.dark-mode .album-toolbar button {
     color: #ffc0e0;
 }
 
+/* Overlay de carga del modelo IA (modo offline) */
+.model-loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 20000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.model-loading-overlay.show { display: flex; }
+.model-loading-card {
+    background: #fff;
+    border-radius: 24px;
+    padding: 32px 28px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border: 3px solid #ffb6d9;
+}
+.model-loading-icon { font-size: 3em; margin-bottom: 12px; }
+.model-loading-card h3 { color: #ff1493; margin-bottom: 8px; font-size: 1.2em; }
+.model-loading-card p { color: #6b4b5e; font-size: 0.9em; margin-bottom: 12px; }
+.model-progress-bar-bg {
+    width: 100%;
+    height: 14px;
+    background: #ffe4f0;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+.model-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ff6fa5, #ff4d6d);
+    border-radius: 999px;
+    transition: width 0.3s;
+}
+.model-progress-pct { font-weight: 800; color: #ff1493; font-size: 0.9em; }
+.model-loading-note { font-size: 0.75em !important; color: #b37a95 !important; margin-top: 10px; }
+
 @media (max-width: 640px) {
     .chat-toolbar {
         padding: 6px 10px 0;
@@ -4513,6 +4557,19 @@ body.dark-mode .album-toolbar button {
     </style>
 </head>
 <body>
+<!-- Overlay de carga del modelo IA (modo offline) -->
+<div class="model-loading-overlay" id="modelLoadingOverlay">
+    <div class="model-loading-card">
+        <div class="model-loading-icon">🤖</div>
+        <h3>Cargando IA en tu navegador</h3>
+        <p id="modelLoadingText">Preparando...</p>
+        <div class="model-progress-bar-bg">
+            <div class="model-progress-bar" id="modelProgressBar"></div>
+        </div>
+        <span class="model-progress-pct" id="modelProgressPct">0%</span>
+        <p class="model-loading-note">La primera vez descarga ~700 MB. Después queda en caché y carga rápido.</p>
+    </div>
+</div>
 <!-- Botón para abrir sidebar -->
 <button class="toggle-sidebar-btn" id="toggleSidebarBtn" aria-label="Abrir historial de conversaciones">📋</button>
 
@@ -5137,6 +5194,113 @@ let conversationHistory = [];
 // El frontend solo habla con /api/chat y /api/health.
 const API_ENDPOINT = '/api/chat';
 const HEALTH_ENDPOINT = '/api/health';
+
+// ============================================================
+// MODO OFFLINE: WebLLM (IA en el navegador, sin API key)
+// ============================================================
+let webllmEngine = null;
+let webllmLoading = false;
+let webllmReady = false;
+let offlineMode = false;
+let modelLoadProgress = 0;
+
+async function checkServerAvailable() {
+    try {
+        const r = await fetch(HEALTH_ENDPOINT, { cache: 'no-store', signal: AbortSignal.timeout(3000) });
+        return r.ok;
+    } catch {
+        return false;
+    }
+}
+
+function showModelLoadingUI(show, text) {
+    const el = document.getElementById('modelLoadingOverlay');
+    if (!el) return;
+    el.classList.toggle('show', show);
+    const txt = document.getElementById('modelLoadingText');
+    if (txt && text) txt.textContent = text;
+}
+
+function updateModelProgress(progress, text) {
+    modelLoadProgress = Math.round(progress * 100);
+    const bar = document.getElementById('modelProgressBar');
+    if (bar) bar.style.width = modelLoadProgress + '%';
+    const pct = document.getElementById('modelProgressPct');
+    if (pct) pct.textContent = modelLoadProgress + '%';
+    const txt = document.getElementById('modelLoadingText');
+    if (txt && text) txt.textContent = text;
+}
+
+async function loadWebLLM() {
+    if (webllmLoading || webllmReady) return webllmReady;
+    webllmLoading = true;
+    showModelLoadingUI(true, 'Descargando modelo de IA... (primera vez, ~700 MB)');
+    try {
+        const webllm = await import('https://esm.run/@mlc-ai/web-llm');
+        const model = 'Llama-3.2-1B-Instruct-q4f32_1-MLC';
+        webllmEngine = await webllm.CreateMLCEngine(model, {
+            initProgressCallback: (report) => {
+                updateModelProgress(report.progress || 0, report.text || 'Cargando...');
+            }
+        });
+        webllmReady = true;
+        webllmLoading = false;
+        showModelLoadingUI(false);
+        return true;
+    } catch (e) {
+        console.error('WebLLM error:', e);
+        webllmLoading = false;
+        showModelLoadingUI(false, 'No se pudo cargar el modelo: ' + (e.message || e));
+        return false;
+    }
+}
+
+async function extractFileTextClientSide(file) {
+    const name = file.name || 'archivo';
+    const lower = name.toLowerCase();
+    if (file.type.startsWith('image/')) {
+        return { kind: 'image', name, file };
+    }
+    if (lower.endsWith('.txt') || lower.endsWith('.md') || lower.endsWith('.csv') || lower.endsWith('.json')) {
+        const text = await file.text();
+        return { kind: 'text', name, text: text.slice(0, 24000) };
+    }
+    if (lower.endsWith('.pdf')) {
+        try {
+            const pdfjsLib = await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs');
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs';
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            let text = '';
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const content = await page.getTextContent();
+                text += content.items.map(item => item.str).join(' ') + '\\n';
+            }
+            return { kind: 'text', name, text: text.trim().slice(0, 24000) };
+        } catch (e) {
+            return { kind: 'text', name, text: '[No se pudo leer el PDF en el navegador]' };
+        }
+    }
+    if (lower.endsWith('.docx')) {
+        try {
+            await new Promise((resolve, reject) => {
+                if (window.mammoth) { resolve(); return; }
+                const s = document.createElement('script');
+                s.src = 'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js';
+                s.onload = resolve;
+                s.onerror = reject;
+                document.head.appendChild(s);
+            });
+            const arrayBuffer = await file.arrayBuffer();
+            const result = await window.mammoth.extractRawText({ arrayBuffer });
+            return { kind: 'text', name, text: (result.value || '').trim().slice(0, 24000) };
+        } catch (e) {
+            return { kind: 'text', name, text: '[No se pudo leer el DOCX en el navegador]' };
+        }
+    }
+    return { kind: 'text', name, text: '[Formato no soportado en modo offline]' };
+}
 const MAX_ATTACHMENTS = 3;
 const MAX_FILE_SIZE = 12 * 1024 * 1024; // 12 MB por archivo
 const MAX_TOTAL_SIZE = 30 * 1024 * 1024; // 30 MB por mensaje
@@ -6193,12 +6357,103 @@ async function checkApiHealth() {
     }
 }
 
+async function sendMessageOffline(message, attachmentsToSend) {
+    sounds.send();
+    sendBtn.disabled = true;
+
+    const displayAttachments = attachmentsToSend.map(item => ({
+        name: item.file.name,
+        kind: item.kind,
+        url: item.url
+    }));
+
+    addMessage(message || '📎 Archivo adjunto', 'user', true, displayAttachments);
+
+    messageInput.value = '';
+    autoResizeInput();
+    const savedAttachments = pendingAttachments.slice();
+    pendingAttachments = [];
+    renderAttachmentTray();
+
+    messageCount++;
+    updateFriendshipLevel();
+    if (message) AIMemory.extractMemoryFromMessage(message);
+
+    // Extraer texto de archivos en el navegador
+    let fileContext = '';
+    const imageAttachments = [];
+    for (const item of attachmentsToSend) {
+        const extracted = await extractFileTextClientSide(item.file);
+        if (extracted.kind === 'text') {
+            fileContext += `\\n\\n[Archivo adjunto: ${extracted.name}]\\n${extracted.text}`;
+        } else if (extracted.kind === 'image') {
+            imageAttachments.push(extracted.name);
+        }
+    }
+
+    if (imageAttachments.length > 0) {
+        addMessage('En modo offline no puedo analizar imágenes. Para eso necesitás el servidor con una API key. 📸', 'assistant');
+        sendBtn.disabled = false;
+        messageInput.focus();
+        return;
+    }
+
+    const apiText = (message || 'Ayudame con este archivo.') + fileContext;
+
+    conversationHistory.push({ role: 'user', content: apiText });
+
+    showTyping();
+
+    try {
+        if (!webllmReady) {
+            const ok = await loadWebLLM();
+            if (!ok) throw new Error('No se pudo cargar el modelo de IA.');
+        }
+
+        const systemPrompt = 'Sos Hello Kitty, la gatita más adorable y kawaii del mundo. Hablás en español argentino de forma muy dulce, amigable y tierna. Usás emojis con moderación. Respondés de forma corta y dulce. En modo offline, ayudás con texto y archivos de texto. No podés ver imágenes.';
+
+        const recentHistory = conversationHistory.slice(-10).map(m => ({ role: m.role, content: m.content }));
+
+        const reply = await webllmEngine.chat.completions.create({
+            messages: [
+                { role: 'system', content: systemPrompt },
+                ...recentHistory
+            ],
+            temperature: 0.8,
+            max_tokens: 500
+        });
+
+        const text = reply.choices?.[0]?.message?.content?.trim();
+        if (!text) throw new Error('El modelo no devolvió una respuesta.');
+
+        conversationHistory.push({ role: 'assistant', content: text });
+        sounds.receive();
+        addMessage(text, 'assistant');
+        saveCurrentChat();
+    } catch (error) {
+        sounds.error();
+        addMessage('😿 ' + (error.message || 'Error en modo offline.'), 'assistant');
+        console.error('Error offline:', error);
+    } finally {
+        hideTyping();
+        sendBtn.disabled = false;
+        messageInput.focus();
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+}
+
 async function sendMessage() {
     const message = messageInput.value.trim();
     const attachmentsToSend = pendingAttachments.slice();
 
     if (!message && attachmentsToSend.length === 0) return;
     if (sendBtn.disabled) return;
+
+    // Modo offline: usar WebLLM en el navegador
+    if (offlineMode) {
+        await sendMessageOffline(message, attachmentsToSend);
+        return;
+    }
 
     sounds.send();
     sendBtn.disabled = true;
@@ -9638,8 +9893,30 @@ window.addEventListener('load', () => {
     safeInit('imágenes', () => optimizeImages());
     safeInit('backup', () => createBackup());
 
-    checkApiHealth();
-    
+    // Detectar si hay servidor disponible; si no, modo offline con WebLLM
+    checkServerAvailable().then(available => {
+        if (available) {
+            offlineMode = false;
+            checkApiHealth();
+        } else {
+            offlineMode = true;
+            const banner = document.getElementById('apiBanner');
+            const text = document.getElementById('apiBannerText');
+            if (banner && text) {
+                text.textContent = 'Modo offline: la IA corre en tu navegador. La primera vez descarga el modelo (~700 MB).';
+                banner.classList.add('show');
+            }
+            loadWebLLM().then(ok => {
+                if (ok) {
+                    hideApiBanner();
+                    addMessage('¡Hola! Estoy lista para charlar. En modo offline puedo ayudarte con texto y archivos de texto/PDF/DOCX. Para analizar fotos necesitás el servidor con una API key. 🎀', 'assistant');
+                } else {
+                    showApiBanner('No se pudo cargar el modelo de IA. Verificá tu conexión y que tu navegador soporte WebGPU.');
+                }
+            });
+        }
+    });
+
     setTimeout(() => {
         checkAchievements();
     }, 200);

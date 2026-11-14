@@ -217,6 +217,33 @@ hellokittyai/
 
 ---
 
+## 🚀 Deploy (para que funcione online sin que el usuario configure nada)
+
+### Opción A: Render (gratis, con UptimeRobot para que no se duerma)
+
+1. Entrá a https://render.com y creá una cuenta con GitHub.
+2. **New +** → **Web Service** → conectá el repo `hellokittyai`.
+3. Render detecta el `render.yaml` automáticamente.
+4. En **Environment Variables**, agregá `OPENAI_API_KEY` con tu clave de OpenRouter.
+5. Clic en **Create Web Service**. Te da una URL tipo `https://hellokittyai.onrender.com`.
+6. **Para que no se duerma**: creá una cuenta gratis en https://uptimerobot.com, agregá un monitor HTTP que haga ping a `https://tu-app.onrender.com/api/health` cada 5 minutos. Así el servidor nunca se duerma.
+
+### Opción B: Railway (gratis con créditos)
+
+1. Entrá a https://railway.app y creá una cuenta con GitHub.
+2. **New Project** → **Deploy from GitHub repo** → seleccioná `hellokittyai`.
+3. Agregá las variables de entorno (`OPENAI_API_KEY`, etc.).
+4. Railway te da una URL. No se duerme mientras tengas créditos (US$5/mes gratis, suficiente).
+
+### Opción C: Fly.io (gratis, siempre activo)
+
+1. Instalá flyctl: https://fly.io/docs/hands-on/install-flyctl/
+2. `fly launch` en la carpeta del proyecto.
+3. `fly secrets set OPENAI_API_KEY=sk-or-v1-...`
+4. `fly deploy`. La app queda siempre activa en el plan gratuito.
+
+---
+
 ## 💕 Créditos
 
 Hecho para aprender, crear y jugar. Si te gusta, ¡compartilo con alguien que también quiera una amiga kawaii para estudiar! 🎀✨

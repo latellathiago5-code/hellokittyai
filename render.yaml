@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: hellokittyai
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: AI_PROVIDER
+        value: openai
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: AI_BASE_URL
+        value: https://openrouter.ai/api/v1
+      - key: AI_MODEL
+        value: google/gemini-2.5-flash
+      - key: AI_VISION_MODEL
+        value: google/gemini-2.5-flash
+      - key: PORT
+        value: 10000
+    healthCheckPath: /api/health
