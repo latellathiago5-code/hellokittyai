@@ -665,9 +665,11 @@ app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.get('/index.html', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.use('/assets', express.static(path.join(__dirname, 'assets'), {
     dotfiles: 'deny',
-    fallthrough: false,
+    fallthrough: true,
     maxAge: '1h'
 }));
+// Missing assets return 404 (not 500) to keep console clean
+app.use('/assets', (req, res) => res.status(404).end());
 
 app.use('/api', (req, res) => res.status(404).json({ error: 'Ruta de API no encontrada.' }));
 
@@ -690,6 +692,9 @@ app.use((error, req, res, next) => {
             });
         }
         return res.status(400).json({ error: { code: 'upload_error', message: error.message } });
+    }
+    if (error && (error.status === 404 || error.statusCode === 404 || error.code === 'ENOENT')) {
+        return res.status(404).end();
     }
     console.error('Error no controlado:', error);
     res.status(500).json({ error: { code: 'server_error', message: 'Ocurrió un error inesperado en el servidor.' } });

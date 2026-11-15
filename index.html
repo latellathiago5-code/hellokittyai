@@ -4855,7 +4855,7 @@ body.dark-mode .album-toolbar button {
     <div class="game-header melody-header">
         <h2>🐰 Memoria con My Melody 🌸</h2>
         <p class="game-score">Movimientos: <span id="memoryMoves">0</span></p>
-        <button class="game-back-btn" id="memoryBackBtn">←</button>
+        <button class="game-back-btn" id="memoryBackBtn" aria-label="Volver al menú de juegos" title="Volver">←</button>
     </div>
     <div class="game-content">
         <!-- Selección de duración -->
@@ -4880,7 +4880,7 @@ body.dark-mode .album-toolbar button {
 <div class="game-screen cinna-game" id="colorGame" style="display: none;">
     <div class="game-header cinna-header">
         <h2>☁️ Colorear con Cinnamoroll 🎨</h2>
-        <button class="game-back-btn" id="colorBackBtn">←</button>
+        <button class="game-back-btn" id="colorBackBtn" aria-label="Volver al menú de juegos" title="Volver">←</button>
     </div>
     <div class="game-content">
         <div class="color-instructions">
@@ -4917,7 +4917,7 @@ body.dark-mode .album-toolbar button {
     <div class="game-header kuromi-header">
         <h2>💀 Ahorcado con Kuromi 🎸</h2>
         <p class="game-score">Intentos restantes: <span id="hangmanAttempts">6</span></p>
-        <button class="game-back-btn" id="hangmanBackBtn">←</button>
+        <button class="game-back-btn" id="hangmanBackBtn" aria-label="Volver al menú de juegos" title="Volver">←</button>
     </div>
     <div class="game-content">
         <!-- Selección de dificultad -->
@@ -4970,7 +4970,7 @@ body.dark-mode .album-toolbar button {
     <div class="game-header ttt-game-header">
         <h2>⭕ Ta-Te-Ti ❌</h2>
         <p class="game-score">Vos: <span id="tttPlayerScore">0</span> | Kitty: <span id="tttPCScore">0</span></p>
-        <button class="game-back-btn ttt-back-btn" id="tictactoeBackBtn">←</button>
+        <button class="game-back-btn ttt-back-btn" id="tictactoeBackBtn" aria-label="Volver al menú de juegos" title="Volver">←</button>
     </div>
     <div class="game-content">
         <!-- Selección de dificultad -->
@@ -5008,7 +5008,7 @@ body.dark-mode .album-toolbar button {
     <div class="game-header" style="background: linear-gradient(135deg, #ff69b4, #ff1493);">
         <h2>👗 Vestir a Hello Kitty 🎀</h2>
         <p class="game-score">Outfits guardados: <span id="savedOutfitsCount">0</span></p>
-        <button class="game-back-btn" id="dressUpBackBtn" style="background: rgba(255, 255, 255, 0.3); border-color: white;">←</button>
+        <button class="game-back-btn" id="dressUpBackBtn" style="background: rgba(255, 255, 255, 0.3); border-color: white;" aria-label="Volver al menú de juegos" title="Volver">←</button>
     </div>
     <div class="game-content">
         <div class="dressup-container">
@@ -5315,35 +5315,30 @@ function getCharacter() {
 }
 
 // Crea un avatar de personaje: imagen si existe, emoji de respaldo si falla
-function createCharAvatar(char, size) {
-    size = size || 40;
-    const wrapper = document.createElement('div');
-    wrapper.className = 'char-avatar';
-    wrapper.style.width = size + 'px';
-    wrapper.style.height = size + 'px';
-    wrapper.style.fontSize = Math.round(size * 0.5) + 'px';
-    wrapper.style.background = char.color;
-    wrapper.style.borderColor = char.color;
-    wrapper.style.color = '#fff';
-    wrapper.textContent = char.emoji;
+// Usa CSS background-image para evitar errores 404 en consola
+const _avatarFailed = new Set();
 
-    const img = document.createElement('img');
-    img.src = char.avatar;
-    img.alt = char.name;
-    img.style.width = '100%';
-    img.style.height = '100%';
-    img.style.borderRadius = '50%';
-    img.style.objectFit = 'cover';
-    img.style.display = 'none';
-    img.onload = () => { wrapper.textContent = ''; wrapper.appendChild(img); img.style.display = 'block'; };
-    img.onerror = () => { img.remove(); };
-    // Trigger load
-    const testImg = new Image();
-    testImg.onload = () => { wrapper.textContent = ''; wrapper.appendChild(img); img.style.display = 'block'; };
-    testImg.onerror = () => {};
-    testImg.src = char.avatar;
-
-    return wrapper;
+function loadCharAvatar(char, container) {
+    if (!container) return;
+    container.textContent = char.emoji;
+    container.style.background = char.color;
+    container.style.borderColor = char.color;
+    container.style.color = '#fff';
+    // Si ya sabemos que no existe, no intentar de nuevo
+    if (_avatarFailed.has(char.id)) return;
+    // Intentar cargar; si falla, recordar y mantener emoji
+    const probe = new Image();
+    probe.onload = () => {
+        container.textContent = '';
+        container.style.backgroundImage = `url('${char.avatar}')`;
+        container.style.backgroundSize = 'cover';
+        container.style.backgroundPosition = 'center';
+    };
+    probe.onerror = () => {
+        _avatarFailed.add(char.id);
+        container.style.backgroundImage = 'none';
+    };
+    probe.src = char.avatar;
 }
 
 function setCharacter(charId) {
@@ -5406,17 +5401,17 @@ function updateCharacterUI() {
         welcomeKitty.style.boxShadow = `0 10px 30px ${char.color}66, 0 0 0 8px ${char.colorSoft}`;
         welcomeKitty.style.background = `linear-gradient(135deg, ${char.colorSoft}, ${char.color}33)`;
         welcomeKitty.style.border = `5px solid ${char.color}`;
-        const img = new Image();
-        img.onload = () => { welcomeKitty.textContent = ''; welcomeKitty.appendChild(img); img.style.width = '100%'; img.style.height = '100%'; img.style.borderRadius = '50%'; img.style.objectFit = 'cover'; };
-        img.onerror = () => {};
-        img.src = char.avatar;
+        loadCharAvatar(char, welcomeKitty);
     }
     const welcomeTitle = document.querySelector('.welcome-title');
     if (welcomeTitle) welcomeTitle.textContent = `¡Hola! ${char.emoji}`;
     const welcomeText = document.querySelector('.welcome-text');
     if (welcomeText) welcomeText.innerHTML = `¡Te doy la bienvenida a mi mundo mágico! 💕✨<br>¿Querés charlar con ${char.name}?`;
     const startBtn = document.getElementById('startChatBtn');
-    if (startBtn) startBtn.innerHTML = `Hablar con ${char.name}`;
+    if (startBtn) {
+        startBtn.innerHTML = `Hablar con ${char.name}`;
+        startBtn.setAttribute('aria-label', `Iniciar chat con ${char.name}`);
+    }
     renderCharSelectors();
 
     // Chat header
@@ -5430,10 +5425,7 @@ function updateCharacterUI() {
         chatAvatar.style.background = char.color;
         chatAvatar.style.borderColor = char.color;
         chatAvatar.style.color = '#fff';
-        const img = new Image();
-        img.onload = () => { chatAvatar.textContent = ''; chatAvatar.appendChild(img); img.style.width = '100%'; img.style.height = '100%'; img.style.borderRadius = '50%'; img.style.objectFit = 'cover'; };
-        img.onerror = () => {};
-        img.src = char.avatar;
+        loadCharAvatar(char, chatAvatar);
     }
     const chatName = document.getElementById('chatCharName');
     if (chatName) chatName.textContent = char.name;
@@ -6255,7 +6247,8 @@ function addMessage(content, role, shouldSave = true, attachments = [], charId =
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${role}`;
     messageDiv.setAttribute('role', 'article');
-    messageDiv.setAttribute('aria-label', `Mensaje de ${role === 'user' ? 'usuario' : 'Hello Kitty'}`);
+    const charName = (role === 'assistant') ? (CHARACTERS[charId || selectedCharacter]?.name || 'Hello Kitty') : 'usuario';
+    messageDiv.setAttribute('aria-label', `Mensaje de ${charName}`);
     
     if (role === 'assistant') {
         const avatar = document.createElement('div');
@@ -6265,11 +6258,7 @@ function addMessage(content, role, shouldSave = true, attachments = [], charId =
         avatar.style.background = char.color;
         avatar.style.borderColor = char.color;
         avatar.style.color = '#fff';
-        // Try loading avatar image
-        const img = new Image();
-        img.onload = () => { avatar.textContent = ''; avatar.appendChild(img); img.style.width = '100%'; img.style.height = '100%'; img.style.borderRadius = '50%'; img.style.objectFit = 'cover'; };
-        img.onerror = () => {};
-        img.src = char.avatar;
+        loadCharAvatar(char, avatar);
         messageDiv.appendChild(avatar);
     }
     
@@ -6316,18 +6305,22 @@ function addMessage(content, role, shouldSave = true, attachments = [], charId =
 }
 
 function showTyping() {
+    const char = getCharacter();
     const typingDiv = document.createElement('div');
     typingDiv.className = 'typing';
     typingDiv.id = 'typing';
     typingDiv.setAttribute('role', 'status');
-    typingDiv.setAttribute('aria-label', 'Hello Kitty está escribiendo');
+    typingDiv.setAttribute('aria-label', char.name + ' está escribiendo');
     typingDiv.innerHTML = `
-        <img src="/assets/kitty.svg" alt="Hello Kitty" class="typing-avatar">
+        <div class="typing-avatar" style="background:${char.color};border-color:${char.color};">${char.emoji}</div>
         <div class="typing-dots">
             <span></span><span></span><span></span>
         </div>
-        <span class="typing-text">Hello Kitty está escribiendo...</span>
+        <span class="typing-text">${char.name} está escribiendo...</span>
     `;
+    // Try loading avatar image
+    const avatarEl = typingDiv.querySelector('.typing-avatar');
+    loadCharAvatar(char, avatarEl);
     chatMessages.appendChild(typingDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
@@ -6588,6 +6581,12 @@ async function sendMessage() {
 
     showTyping();
 
+    // Si el servidor está despertando, avisar después de 5 segundos
+    const wakeUpTimer = setTimeout(() => {
+        const typingText = document.querySelector('.typing-text');
+        if (typingText) typingText.textContent = 'Estoy despertando, puede tardar un ratito 💤';
+    }, 5000);
+
     try {
         const formData = new FormData();
         const historyForApi = conversationHistory.map(item => ({
@@ -6641,6 +6640,7 @@ async function sendMessage() {
         addMessage(`😿 ${friendlyMessage}`, 'assistant', true, [], selectedCharacter);
         console.error('Error:', error);
     } finally {
+        clearTimeout(wakeUpTimer);
         hideTyping();
         sendBtn.disabled = false;
         messageInput.focus();
@@ -6663,10 +6663,8 @@ function resetConversation() {
             </div>
         `;
         // Try loading avatar image
-        const wImg = new Image();
-        wImg.onload = () => { const el = document.getElementById('chatWelcomeAvatar'); if (el) { el.textContent = ''; el.appendChild(wImg); wImg.style.width = '100%'; wImg.style.height = '100%'; wImg.style.borderRadius = '50%'; wImg.style.objectFit = 'cover'; } };
-        wImg.onerror = () => {};
-        wImg.src = char.avatar;
+        const wEl = document.getElementById('chatWelcomeAvatar');
+        if (wEl) loadCharAvatar(char, wEl);
         announceToScreenReader('Conversación reiniciada');
     });
 }
@@ -6682,10 +6680,11 @@ clearBtn.addEventListener('click', () => {
         clearPendingAttachments();
         currentChatId = Date.now().toString();
         conversationHistory = [];
+        const clearChar = getCharacter();
         chatMessages.innerHTML = `
             <div class="welcome-message">
-                <img src="/assets/kitty.svg" alt="Hello Kitty" class="kitty-avatar">
-                <p>¡Hola! Soy Hello Kitty 🎀✨<br>Empecemos de nuevo nuestra amistad 💕🌸</p>
+                <div class="char-avatar" style="width:60px;height:60px;font-size:2em;margin:0 auto 12px;background:${clearChar.color};border-color:${clearChar.color};">${clearChar.emoji}</div>
+                <p>${clearChar.greeting}</p>
             </div>
         `;
         loadChatHistory();
@@ -9377,6 +9376,7 @@ const MemoryAlbum = {
             id: Date.now(),
             text: messageText,
             isUser: isUser,
+            character: selectedCharacter,
             timestamp: Date.now(),
             date: new Date().toLocaleDateString('es-AR')
         };
@@ -9490,9 +9490,13 @@ function renderAlbum() {
         const item = document.createElement('div');
         item.className = 'album-item';
 
+        const char = CHARACTERS[memory.character] || CHARACTERS.kitty;
         const avatar = document.createElement('div');
         avatar.className = 'album-avatar';
-        avatar.textContent = memory.isUser ? '💭' : '🎀';
+        avatar.textContent = memory.isUser ? '💭' : char.emoji;
+        avatar.style.background = memory.isUser ? '' : char.color;
+        avatar.style.borderColor = memory.isUser ? '' : char.color;
+        avatar.style.color = '#fff';
 
         const body = document.createElement('div');
         body.className = 'album-body';
