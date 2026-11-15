@@ -5269,7 +5269,7 @@ const CHARACTERS = {
         id: 'kitty',
         name: 'Hello Kitty',
         emoji: '🎀',
-        avatar: '/assets/avatars/kitty.png',
+        avatar: '/assets/avatars/kitty.svg',
         color: '#ff4d6d',
         colorSoft: '#ffe4f0',
         greeting: '¡Hola! Soy Hello Kitty 💕 ¿Querés charlar conmigo?',
@@ -5279,7 +5279,7 @@ const CHARACTERS = {
         id: 'melody',
         name: 'My Melody',
         emoji: '🐰',
-        avatar: '/assets/avatars/melody.png',
+        avatar: '/assets/avatars/melody.svg',
         color: '#ff8fb8',
         colorSoft: '#ffe8f4',
         greeting: '¡Hola! Soy My Melody 🐰 Me encanta hornear galletitas y cuidar mis flores. ¿Querés que cocinemos juntas?',
@@ -5289,7 +5289,7 @@ const CHARACTERS = {
         id: 'cinnamoroll',
         name: 'Cinnamoroll',
         emoji: '☁️',
-        avatar: '/assets/avatars/cinnamoroll.png',
+        avatar: '/assets/avatars/cinnamoroll.svg',
         color: '#6fb7ff',
         colorSoft: '#e4f2ff',
         greeting: '¡Hola! Soy Cinnamoroll ☁️ Me encanta volar entre las nubes. ¿Querés charlar un ratito?',
@@ -5299,7 +5299,7 @@ const CHARACTERS = {
         id: 'kuromi',
         name: 'Kuromi',
         emoji: '💀',
-        avatar: '/assets/avatars/kuromi.png',
+        avatar: '/assets/avatars/kuromi.svg',
         color: '#9370db',
         colorSoft: '#eee4ff',
         greeting: '¡Hola! Soy Kuromi 💀 ¿Listo/a para rockear? No te asustes, soy más tierna de lo que parezco.',
@@ -9497,6 +9497,7 @@ function renderAlbum() {
         avatar.style.background = memory.isUser ? '' : char.color;
         avatar.style.borderColor = memory.isUser ? '' : char.color;
         avatar.style.color = '#fff';
+        if (!memory.isUser) loadCharAvatar(char, avatar);
 
         const body = document.createElement('div');
         body.className = 'album-body';
