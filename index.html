@@ -2,12 +2,17 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Hello Kitty AI 🎀</title>
     
     <link rel="canonical" href="https://hellokittyai.onrender.com/">
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <meta name="theme-color" content="#ff4d6d">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="author" content="[ESCRIBÍ ACÁ TU NOMBRE O MARCA]">
     
     <!-- Open Graph / Facebook / WhatsApp -->
@@ -97,16 +102,25 @@ body {
     font-family: var(--font-main);
     background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
     background-attachment: fixed;
-    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
+    padding-top: calc(20px + env(safe-area-inset-top));
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
+    padding-left: calc(20px + env(safe-area-inset-left));
+    padding-right: calc(20px + env(safe-area-inset-right));
     position: relative;
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+/* Touch: prevent double-tap zoom on controls */
+button, a, input, select, textarea, .char-btn, .mode-btn, .tool-btn, .game-action-btn, .game-restart-btn, .control-btn, .reset-btn, .start-chat-btn, .kawai-modal-btn, .category-btn, .filter-btn, .album-toolbar button {
+    touch-action: manipulation;
 }
 
 /* Decoración de fondo sutil: gradiente animado y suave (no tapa botones) */
@@ -291,7 +305,7 @@ body::before {
     left: -350px;
     top: 0;
     width: 350px;
-    height: 100vh;
+    height: 100dvh;
     background: var(--glass-bg);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -875,8 +889,8 @@ h1 {
 
     .container {
         border-radius: 0;
-        height: 100vh;
-        max-height: 100vh;
+        height: 100dvh;
+        max-height: 100dvh;
         border: none;
     }
 
@@ -1099,7 +1113,7 @@ h1 {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     background: linear-gradient(135deg, #ffe0f0 0%, #ffc0e0 25%, #ffb6d9 50%, #ff99cc 75%, #ff88cc 100%);
     display: flex;
     justify-content: center;
@@ -1491,7 +1505,7 @@ body.dark-mode .typing-text {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     background: rgba(0, 0, 0, 0.7);
     display: none;
     justify-content: center;
@@ -1620,7 +1634,7 @@ body.dark-mode .achievements-title {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     background: rgba(0, 0, 0, 0.7);
     display: none;
     justify-content: center;
@@ -1852,7 +1866,7 @@ body.dark-mode .category-btn.active {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     background: rgba(0, 0, 0, 0.7);
     display: none;
     justify-content: center;
@@ -2203,7 +2217,7 @@ body.dark-mode .welcome-text {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     background: linear-gradient(135deg, #ffe0f0 0%, #ffc0e0 25%, #ffb6d9 50%, #ff99cc 75%, #ff88cc 100%);
     display: flex;
     justify-content: center;
@@ -2686,7 +2700,7 @@ body.dark-mode .welcome-text {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     z-index: 9999;
     overflow-x: hidden;
     overflow-y: auto;
@@ -4021,6 +4035,23 @@ body.dark-mode .welcome-text {
     color: #fff;
 }
 
+/* Aviso de privacidad */
+.privacy-notice {
+    text-align: center;
+    font-size: 0.72em;
+    color: #b37a95;
+    padding: 6px 16px;
+    background: rgba(255, 255, 255, 0.5);
+    border-top: 1px solid rgba(255, 105, 180, 0.15);
+    flex-shrink: 0;
+    font-weight: 600;
+}
+
+body.dark-mode .privacy-notice {
+    background: rgba(255, 255, 255, 0.05);
+    color: #c9a0b8;
+}
+
 /* ============================================================
    ADJUNTOS, MODO TAREA, MARKDOWN Y EXTRAS
    ============================================================ */
@@ -4670,7 +4701,7 @@ body.dark-mode .album-toolbar button {
     <div class="welcome-content">
         <div class="welcome-kitty" id="welcomeKittyAvatar" style="display:flex;align-items:center;justify-content:center;font-size:5em;background:linear-gradient(135deg,#ffe4f0,#ffc0e0);">🎀</div>
         <h1 class="welcome-title">¡Hola! 🎀</h1>
-        <p class="welcome-text">Bienvenido a mi mundo mágico 💕✨<br>¿Querés charlar conmigo?</p>
+        <p class="welcome-text">¡Te doy la bienvenida a mi mundo mágico! 💕✨<br>¿Querés charlar conmigo?</p>
         <div class="char-selector" id="welcomeCharSelector"></div>
         <button class="start-chat-btn" id="startChatBtn" aria-label="Iniciar chat con Hello Kitty">
             
@@ -4733,6 +4764,9 @@ body.dark-mode .album-toolbar button {
                 <div class="char-avatar" id="chatWelcomeAvatar" style="width:60px;height:60px;font-size:2em;margin:0 auto 12px;">🎀</div>
                 <p id="chatWelcomeText">¡Hola! Soy Hello Kitty 🎀✨<br>¿Cómo estás hoy? ¡Contame todo! 💕🌸</p>
             </div>
+        </div>
+        <div class="privacy-notice">
+            🔒 Las conversaciones se guardan en tu navegador. Este es un proyecto no oficial, no afiliado a Sanrio. La IA puede cometer errores.
         </div>
 
         <div class="chat-toolbar">
@@ -4805,7 +4839,7 @@ body.dark-mode .album-toolbar button {
             <!-- Juego 5: Vestir a Hello Kitty -->
             <div class="game-card kitty-theme" id="dressUpCard">
                 <div class="game-icon">👗</div>
-                <h3 class="game-name">Vestir a Kitty</h3>
+                <h3 class="game-name">Vestir a Hello Kitty</h3>
                 <p class="game-character">con Hello Kitty</p>
                 <p class="game-description">¡Creá outfits adorables!</p>
             </div>
@@ -4825,11 +4859,11 @@ body.dark-mode .album-toolbar button {
     <div class="game-content">
         <!-- Selección de duración -->
         <div id="memoryDurationScreen">
-            <h3 style="color: #d91e7a; font-size: 2em; margin-bottom: 30px;">Elegí la duración</h3>
+            <h3 style="color: #d91e7a; font-size: 2em; margin-bottom: 30px;">Tamaño del tablero</h3>
             <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
-                <button class="game-restart-btn melody-btn" onclick="startMemoryGame('short')">⚡ Corta duración</button>
-                <button class="game-restart-btn melody-btn" onclick="startMemoryGame('normal')">⭐ Duración normal</button>
-                <button class="game-restart-btn melody-btn" onclick="startMemoryGame('long')">🔥 Larga duración</button>
+                <button class="game-restart-btn melody-btn" onclick="startMemoryGame('short')">⚡ Chico (8 pares)</button>
+                <button class="game-restart-btn melody-btn" onclick="startMemoryGame('normal')">⭐ Mediano (12 pares)</button>
+                <button class="game-restart-btn melody-btn" onclick="startMemoryGame('long')">🔥 Grande (16 pares)</button>
             </div>
         </div>
         
@@ -4934,7 +4968,7 @@ body.dark-mode .album-toolbar button {
 <div class="game-screen ttt-game-screen" id="tictactoeGame" style="display: none;">
     <div class="game-header ttt-game-header">
         <h2>⭕ Ta-Te-Ti ❌</h2>
-        <p class="game-score">Vos: <span id="tttPlayerScore">0</span> | PC: <span id="tttPCScore">0</span></p>
+        <p class="game-score">Vos: <span id="tttPlayerScore">0</span> | Kitty: <span id="tttPCScore">0</span></p>
         <button class="game-back-btn ttt-back-btn" id="tictactoeBackBtn">←</button>
     </div>
     <div class="game-content">
@@ -5234,37 +5268,41 @@ const CHARACTERS = {
         id: 'kitty',
         name: 'Hello Kitty',
         emoji: '🎀',
+        avatar: '/assets/avatars/kitty.png',
         color: '#ff4d6d',
         colorSoft: '#ffe4f0',
         greeting: '¡Hola! Soy Hello Kitty 💕 ¿Querés charlar conmigo?',
-        systemPrompt: 'Sos Hello Kitty, la gatita más adorable y kawaii del mundo. Hablás en español rioplatense de forma muy dulce, amigable y tierna. Usás emojis con moderación. Siempre sos positiva, alegre y te encanta hacer amigos. Respondés de forma corta y dulce.'
+        systemPrompt: 'Sos Hello Kitty, la gatita más adorable y kawaii del mundo. Hablás en español rioplatense de forma muy dulce, amigable y tierna. Usás emojis con moderación. Siempre sos positiva, alegre y te encanta hacer amigos. Respondés de forma corta y dulce. NUNCA te presentes como otro personaje ni generes diálogos de otros personajes. Solo respondés como Hello Kitty. Seguridad: respondé siempre de forma apta para todo público. No hables de violencia, sexo, drogas ni temas de adultos; si surge algo así, redirigí con amabilidad a algo sano. No pidas datos personales (nombre completo, dirección, escuela, teléfono). Si la persona cuenta que está triste, sufre bullying o está en peligro, respondé con cariño y sugerile hablar con un adulto de confianza.'
     },
     melody: {
         id: 'melody',
         name: 'My Melody',
         emoji: '🐰',
+        avatar: '/assets/avatars/melody.png',
         color: '#ff8fb8',
         colorSoft: '#ffe8f4',
         greeting: '¡Hola! Soy My Melody 🐰 Me encanta hornear galletitas y cuidar mis flores. ¿Querés que cocinemos juntas?',
-        systemPrompt: 'Sos My Melody, la conejita tierna y educada del mundo de Sanrio. Hablás en español rioplatense de forma dulce, educada y soñadora. Le encanta hornear, las flores y alentar a los demás. Siempre sos positiva y amable. Usás emojis con moderación (🐰🌸💕✨). Respondés de forma corta y tierna.'
+        systemPrompt: 'Sos My Melody, la conejita tierna y educada del mundo de Sanrio. Hablás en español rioplatense de forma dulce, educada y soñadora. Le encanta hornear, las flores y alentar a los demás. Siempre sos positiva y amable. Usás emojis con moderación. Respondés de forma corta y tierna. NUNCA te presentes como otro personaje ni generes diálogos de otros personajes. Solo respondés como My Melody. Seguridad: respondé siempre de forma apta para todo público. No hables de violencia, sexo, drogas ni temas de adultos; si surge algo así, redirigí con amabilidad a algo sano. No pidas datos personales (nombre completo, dirección, escuela, teléfono). Si la persona cuenta que está triste, sufre bullying o está en peligro, respondé con cariño y sugerile hablar con un adulto de confianza.'
     },
     cinnamoroll: {
         id: 'cinnamoroll',
         name: 'Cinnamoroll',
-        emoji: '🐶',
+        emoji: '☁️',
+        avatar: '/assets/avatars/cinnamoroll.png',
         color: '#6fb7ff',
         colorSoft: '#e4f2ff',
         greeting: '¡Hola! Soy Cinnamoroll ☁️ Me encanta volar entre las nubes. ¿Querés charlar un ratito?',
-        systemPrompt: 'Sos Cinnamoroll, el cachorrito cariñoso y un poco tímido del mundo de Sanrio. Hablás en español rioplatense con ternura y entusiasmo. Ama volar entre las nubes y es muy cariñoso. A veces es tímido pero siempre amable. Usás emojis con moderación (🐶☁️💕✨). Respondés de forma corta y dulce.'
+        systemPrompt: 'Sos Cinnamoroll, el cachorrito cariñoso y un poco tímido del mundo de Sanrio. Hablás en español rioplatense con ternura y entusiasmo. Ama volar entre las nubes y es muy cariñoso. A veces es tímido pero siempre amable. Usás emojis con moderación. Respondés de forma corta y dulce. NUNCA te presentes como otro personaje ni generes diálogos de otros personajes. Solo respondés como Cinnamoroll. Seguridad: respondé siempre de forma apta para todo público. No hables de violencia, sexo, drogas ni temas de adultos; si surge algo así, redirigí con amabilidad a algo sano. No pidas datos personales (nombre completo, dirección, escuela, teléfono). Si la persona cuenta que está triste, sufre bullying o está en peligro, respondé con cariño y sugerile hablar con un adulto de confianza.'
     },
     kuromi: {
         id: 'kuromi',
         name: 'Kuromi',
-        emoji: '🖤',
+        emoji: '💀',
+        avatar: '/assets/avatars/kuromi.png',
         color: '#9370db',
         colorSoft: '#eee4ff',
-        greeting: '¡Hola! Soy Kuromi 🖤 ¿Listo/a para rockear? No te asustes, soy más tierna de lo que parezco.',
-        systemPrompt: 'Sos Kuromi, la conejita pícara y rockera del mundo de Sanrio. Hablás en español rioplatense con humor sarcástico pero de buen corazón. Ama la música y se hace la dura, aunque se le nota la ternura. Podés ser traviesa y usar expresiones como "che", "re", "boludo/a" de forma cariñosa, pero nunca agresiva ni con malas palabras. Siempre terminás ayudando. Usás emojis con moderación (🖤🤘🎸✨). Respondés de forma corta y con actitud.'
+        greeting: '¡Hola! Soy Kuromi 💀 ¿Listo/a para rockear? No te asustes, soy más tierna de lo que parezco.',
+        systemPrompt: 'Sos Kuromi, la conejita pícara y rockera del mundo de Sanrio. Hablás en español rioplatense con humor sarcástico pero de buen corazón. Ama la música y se hace la dura, aunque se le nota la ternura. Podés ser traviesa y usar expresiones como "che", "re" de forma cariñosa, pero nunca agresiva ni con malas palabras. Siempre terminás ayudando. Usás emojis con moderación. Respondés de forma corta y con actitud. NUNCA te presentes como otro personaje ni generes diálogos de otros personajes. Solo respondés como Kuromi. Seguridad: respondé siempre de forma apta para todo público. No hables de violencia, sexo, drogas ni temas de adultos; si surge algo así, redirigí con amabilidad a algo sano. No pidas datos personales (nombre completo, dirección, escuela, teléfono). Si la persona cuenta que está triste, sufre bullying o está en peligro, respondé con cariño y sugerile hablar con un adulto de confianza.'
     }
 };
 
@@ -5273,6 +5311,38 @@ if (!CHARACTERS[selectedCharacter]) selectedCharacter = 'kitty';
 
 function getCharacter() {
     return CHARACTERS[selectedCharacter];
+}
+
+// Crea un avatar de personaje: imagen si existe, emoji de respaldo si falla
+function createCharAvatar(char, size) {
+    size = size || 40;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'char-avatar';
+    wrapper.style.width = size + 'px';
+    wrapper.style.height = size + 'px';
+    wrapper.style.fontSize = Math.round(size * 0.5) + 'px';
+    wrapper.style.background = char.color;
+    wrapper.style.borderColor = char.color;
+    wrapper.style.color = '#fff';
+    wrapper.textContent = char.emoji;
+
+    const img = document.createElement('img');
+    img.src = char.avatar;
+    img.alt = char.name;
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.borderRadius = '50%';
+    img.style.objectFit = 'cover';
+    img.style.display = 'none';
+    img.onload = () => { wrapper.textContent = ''; wrapper.appendChild(img); img.style.display = 'block'; };
+    img.onerror = () => { img.remove(); };
+    // Trigger load
+    const testImg = new Image();
+    testImg.onload = () => { wrapper.textContent = ''; wrapper.appendChild(img); img.style.display = 'block'; };
+    testImg.onerror = () => {};
+    testImg.src = char.avatar;
+
+    return wrapper;
 }
 
 function setCharacter(charId) {
@@ -5335,11 +5405,15 @@ function updateCharacterUI() {
         welcomeKitty.style.boxShadow = `0 10px 30px ${char.color}66, 0 0 0 8px ${char.colorSoft}`;
         welcomeKitty.style.background = `linear-gradient(135deg, ${char.colorSoft}, ${char.color}33)`;
         welcomeKitty.style.border = `5px solid ${char.color}`;
+        const img = new Image();
+        img.onload = () => { welcomeKitty.textContent = ''; welcomeKitty.appendChild(img); img.style.width = '100%'; img.style.height = '100%'; img.style.borderRadius = '50%'; img.style.objectFit = 'cover'; };
+        img.onerror = () => {};
+        img.src = char.avatar;
     }
     const welcomeTitle = document.querySelector('.welcome-title');
     if (welcomeTitle) welcomeTitle.textContent = `¡Hola! ${char.emoji}`;
     const welcomeText = document.querySelector('.welcome-text');
-    if (welcomeText) welcomeText.innerHTML = `Bienvenido a mi mundo mágico 💕✨<br>¿Querés charlar con ${char.name}?`;
+    if (welcomeText) welcomeText.innerHTML = `¡Te doy la bienvenida a mi mundo mágico! 💕✨<br>¿Querés charlar con ${char.name}?`;
     const startBtn = document.getElementById('startChatBtn');
     if (startBtn) startBtn.innerHTML = `Hablar con ${char.name}`;
     renderCharSelectors();
@@ -5354,6 +5428,11 @@ function updateCharacterUI() {
         chatAvatar.textContent = char.emoji;
         chatAvatar.style.background = char.color;
         chatAvatar.style.borderColor = char.color;
+        chatAvatar.style.color = '#fff';
+        const img = new Image();
+        img.onload = () => { chatAvatar.textContent = ''; chatAvatar.appendChild(img); img.style.width = '100%'; img.style.height = '100%'; img.style.borderRadius = '50%'; img.style.objectFit = 'cover'; };
+        img.onerror = () => {};
+        img.src = char.avatar;
     }
     const chatName = document.getElementById('chatCharName');
     if (chatName) chatName.textContent = char.name;
@@ -6185,6 +6264,11 @@ function addMessage(content, role, shouldSave = true, attachments = [], charId =
         avatar.style.background = char.color;
         avatar.style.borderColor = char.color;
         avatar.style.color = '#fff';
+        // Try loading avatar image
+        const img = new Image();
+        img.onload = () => { avatar.textContent = ''; avatar.appendChild(img); img.style.width = '100%'; img.style.height = '100%'; img.style.borderRadius = '50%'; img.style.objectFit = 'cover'; };
+        img.onerror = () => {};
+        img.src = char.avatar;
         messageDiv.appendChild(avatar);
     }
     
@@ -6573,10 +6657,15 @@ function resetConversation() {
         const char = getCharacter();
         chatMessages.innerHTML = `
             <div class="welcome-message">
-                <div class="char-avatar" style="width:60px;height:60px;font-size:2em;margin:0 auto 12px;background:${char.color};border-color:${char.color};">${char.emoji}</div>
-                <p>${char.greeting}</p>
+                <div class="char-avatar" id="chatWelcomeAvatar" style="width:60px;height:60px;font-size:2em;margin:0 auto 12px;background:${char.color};border-color:${char.color};">${char.emoji}</div>
+                <p id="chatWelcomeText">${char.greeting}</p>
             </div>
         `;
+        // Try loading avatar image
+        const wImg = new Image();
+        wImg.onload = () => { const el = document.getElementById('chatWelcomeAvatar'); if (el) { el.textContent = ''; el.appendChild(wImg); wImg.style.width = '100%'; wImg.style.height = '100%'; wImg.style.borderRadius = '50%'; wImg.style.objectFit = 'cover'; } };
+        wImg.onerror = () => {};
+        wImg.src = char.avatar;
         announceToScreenReader('Conversación reiniciada');
     });
 }
@@ -7879,7 +7968,7 @@ function checkTicTacToeResult() {
     
     // Cambiar turno
     tttCurrentPlayer = tttCurrentPlayer === 'X' ? 'O' : 'X';
-    updateTicTacToeStatus(tttCurrentPlayer === 'X' ? 'Tu turno - Sos X' : 'Turno de la PC - O');
+    updateTicTacToeStatus(tttCurrentPlayer === 'X' ? 'Tu turno - Sos X' : 'Turno de Kitty - O');
 }
 
 function updateTicTacToeStatus(message) {
