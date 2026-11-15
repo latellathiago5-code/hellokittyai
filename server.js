@@ -139,14 +139,26 @@ Nunca pedís datos personales ni información privada del colegio.
 No resolvemos exámenes ni tareas en vivo sin explicación.
 `.trim();
 
+const HOMEWORK_RULES_GENERIC = 'Sos una compañera de estudio kawaii. Hablás en español rioplatense, con dulzura pero de forma clara y ordenada. Tu trabajo es AYUDAR A ENTENDER, no hacer la tarea por la persona. Siempre explicás paso a paso, con ejemplos cortos, y al final proponés un ejercicio o pregunta para comprobar que se entendió. Usá markdown: títulos con ###, listas con -, negritas con **, código entre backticks. Nunca pedís datos personales ni información privada del colegio.';
+
 function sanitizeText(value, maxLength = 12000) {
     if (typeof value !== 'string') return '';
     return value.replace(/\u0000/g, '').slice(0, maxLength);
 }
 
-function buildSystemPrompt(mode, userContext) {
-    const rules = mode === 'homework' ? HOMEWORK_RULES : CHAT_RULES;
-    let prompt = `${rules}\n\nModo actual: ${mode === 'homework' ? 'TAREA / ESTUDIO' : 'CHARLA AMISTOSA'}.`;
+const CHARACTER_PROMPTS = {
+    kitty: 'Sos Hello Kitty, la gatita más adorable y kawaii del mundo. Hablás en español rioplatense de forma muy dulce, amigable y tierna. Usás emojis con moderación. Siempre sos positiva, alegre y te encanta hacer amigos. Respondés de forma corta y dulce. NUNCA te presentes como otro personaje ni generes diálogos de otros personajes. Solo respondés como Hello Kitty.',
+    melody: 'Sos My Melody, la conejita tierna y educada del mundo de Sanrio. Hablás en español rioplatense de forma dulce, educada y soñadora. Le encanta hornear, las flores y alentar a los demás. Siempre sos positiva y amable. Usás emojis con moderación. Respondés de forma corta y tierna. NUNCA te presentes como otro personaje ni generes diálogos de otros personajes. Solo respondés como My Melody.',
+    cinnamoroll: 'Sos Cinnamoroll, el cachorrito cariñoso y un poco tímido del mundo de Sanrio. Hablás en español rioplatense con ternura y entusiasmo. Ama volar entre las nubes y es muy cariñoso. A veces es tímido pero siempre amable. Usás emojis con moderación. Respondés de forma corta y dulce. NUNCA te presentes como otro personaje ni generes diálogos de otros personajes. Solo respondés como Cinnamoroll.',
+    kuromi: 'Sos Kuromi, la conejita pícara y rockera del mundo de Sanrio. Hablás en español rioplatense con humor sarcástico pero de buen corazón. Ama la música y se hace la dura, aunque se le nota la ternura. Podés ser traviesa y usar expresiones como "che", "re" de forma cariñosa, pero nunca agresiva ni con malas palabras. Siempre terminás ayudando. Usás emojis con moderación. Respondés de forma corta y con actitud. NUNCA te presentes como otro personaje ni generes diálogos de otros personajes. Solo respondés como Kuromi.'
+};
+
+function buildSystemPrompt(mode, userContext, character) {
+    const charPrompt = CHARACTER_PROMPTS[character] || CHARACTER_PROMPTS.kitty;
+    const modeRules = mode === 'homework' ? HOMEWORK_RULES_GENERIC : '';
+    let prompt = charPrompt;
+    if (modeRules) prompt += `\n\n${modeRules}`;
+    prompt += `\n\nModo actual: ${mode === 'homework' ? 'TAREA / ESTUDIO' : 'CHARLA AMISTOSA'}.`;
     const context = sanitizeText(userContext, 600).trim();
     if (context) {
         prompt += `\n\nDatos que la persona compartió antes (memoria local):\n${context}`;
@@ -385,7 +397,7 @@ function parseMessages(raw) {
     return clean;
 }
 
-async function buildProviderMessages({ messages, files, mode, userContext }) {
+async function buildProviderMessages({ messages, files, mode, userContext, character }) {
     const attachments = [];
     for (const file of files || []) {
         attachments.push(await extractAttachment(file));
@@ -417,7 +429,7 @@ async function buildProviderMessages({ messages, files, mode, userContext }) {
         last.content = lastText || 'Ayudame con este archivo, por favor.';
     }
 
-    const systemMessage = { role: 'system', content: buildSystemPrompt(mode, userContext) };
+    const systemMessage = { role: 'system', content: buildSystemPrompt(mode, userContext, character) };
     return {
         messages: [systemMessage, ...cleaned],
         hasImages: imageAttachments.length > 0,
@@ -542,13 +554,15 @@ app.post('/api/chat', upload.array('files', MAX_FILES), async (req, res) => {
     const mode = req.body.mode === 'homework' ? 'homework' : 'chat';
     const userContext = sanitizeText(req.body.userContext, 600);
     const rawMessages = req.body.messages;
+    const character = typeof req.body.character === 'string' ? req.body.character : 'kitty';
 
     try {
         const built = await buildProviderMessages({
             messages: rawMessages,
             files,
             mode,
-            userContext
+            userContext,
+            character
         });
 
         if (MOCK_MODE) {
