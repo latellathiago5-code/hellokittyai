@@ -375,10 +375,29 @@ body::before {
 }
 
 .chat-history-date {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-size: 0.8em;
     color: #ff69b4;
     font-weight: bold;
     margin-bottom: 5px;
+}
+
+.chat-history-char {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9em;
+    line-height: 1;
+    flex-shrink: 0;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid rgba(255, 105, 180, 0.4);
 }
 
 .chat-history-preview {
@@ -489,7 +508,10 @@ header h1 {
 
 
 .header-controls {
-    display: none;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .control-btn {
@@ -3994,9 +4016,21 @@ body.dark-mode .welcome-text {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.char-btn .char-emoji {
-    font-size: 1.3em;
+.char-btn .char-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1em;
     line-height: 1;
+    flex-shrink: 0;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid rgba(255, 255, 255, 0.75);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .char-avatar {
@@ -4048,301 +4082,6 @@ body.dark-mode .welcome-text {
 body.dark-mode .privacy-notice {
     background: rgba(255, 255, 255, 0.05);
     color: #c9a0b8;
-}
-
-/* ============================================================
-   BARRA DE NAVEGACIÓN INFERIOR Y PANEL "MÁS"
-   ============================================================ */
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    display: none;
-    justify-content: space-around;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-top: 2px solid rgba(255, 105, 180, 0.2);
-    padding: 6px 4px;
-    padding-bottom: calc(6px + env(safe-area-inset-bottom));
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
-}
-
-.bottom-nav.show { display: flex; }
-
-/* Desktop: sidebar izquierda en vez de bottom nav */
-.desktop-sidebar {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 220px;
-    height: 100vh;
-    height: 100dvh;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-right: 2px solid rgba(255, 105, 180, 0.2);
-    padding: 20px 12px;
-    padding-top: calc(20px + env(safe-area-inset-top));
-    z-index: 1000;
-    overflow-y: auto;
-    flex-direction: column;
-    gap: 8px;
-    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
-}
-
-.desktop-sidebar.show { display: flex; }
-
-.desktop-sidebar-btn {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border: none;
-    background: transparent;
-    color: #8a3b62;
-    font-family: var(--font-main);
-    font-weight: 800;
-    font-size: 0.9em;
-    padding: 12px 16px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: left;
-    width: 100%;
-}
-
-.desktop-sidebar-btn .nav-icon {
-    font-size: 1.3em;
-    line-height: 1;
-}
-
-.desktop-sidebar-btn.active {
-    color: #ff1493;
-    background: rgba(255, 105, 180, 0.12);
-}
-
-.desktop-sidebar-btn:hover {
-    background: rgba(255, 105, 180, 0.08);
-}
-
-.desktop-sidebar-section {
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(255, 105, 180, 0.2);
-}
-
-.desktop-sidebar-section-title {
-    font-size: 0.75em;
-    font-weight: 800;
-    color: #b37a95;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 4px 16px;
-    margin-bottom: 4px;
-}
-
-.desktop-sidebar-danger {
-    color: #b3243c;
-}
-
-.desktop-sidebar-danger:hover {
-    background: #ffe0e0;
-}
-
-@media (max-width: 768px) {
-    .desktop-sidebar { display: none !important; }
-    .desktop-sidebar.show { display: none !important; }
-}
-
-@media (min-width: 769px) {
-    .bottom-nav { display: none !important; }
-    .bottom-nav.show { display: none !important; }
-    body.has-bottom-nav .container,
-    body.has-bottom-nav .games-menu {
-        margin-bottom: 0;
-        margin-left: 240px;
-    }
-    .container, .games-menu, .welcome-screen {
-        margin-left: 240px;
-    }
-    .welcome-screen {
-        margin-left: 240px;
-        width: calc(100% - 240px);
-    }
-}
-
-body.has-bottom-nav .container,
-body.has-bottom-nav .games-menu {
-    margin-bottom: 70px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-
-.bottom-nav-btn {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    border: none;
-    background: transparent;
-    color: #8a3b62;
-    font-family: var(--font-main);
-    font-size: 0.65em;
-    font-weight: 800;
-    padding: 6px 2px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-    min-width: 0;
-}
-
-.bottom-nav-btn .nav-icon {
-    font-size: 1.5em;
-    line-height: 1;
-}
-
-.bottom-nav-btn.active {
-    color: #ff1493;
-    background: rgba(255, 105, 180, 0.12);
-}
-
-.bottom-nav-btn:hover {
-    background: rgba(255, 105, 180, 0.08);
-}
-
-.more-panel {
-    position: fixed;
-    inset: 0;
-    z-index: 10002;
-    display: none;
-    justify-content: center;
-    align-items: flex-end;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-}
-
-.more-panel.show { display: flex; }
-
-.more-panel-content {
-    background: linear-gradient(to bottom, #fff5f9, #fffbfe);
-    border-radius: 24px 24px 0 0;
-    width: 100%;
-    max-width: 500px;
-    padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
-    border-top: 3px solid #ffb6d9;
-    animation: slideUp 0.3s ease-out;
-}
-
-@keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-}
-
-.more-panel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 2px dashed #ffb6d9;
-}
-
-.more-panel-title {
-    font-size: 1.2em;
-    font-weight: 900;
-    color: #ff1493;
-}
-
-.more-panel-close {
-    border: none;
-    background: #ff1493;
-    color: #fff;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    font-size: 1em;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.more-panel-btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    border: 2px solid #ffd6e7;
-    background: #fff;
-    color: #4a2c3d;
-    border-radius: 16px;
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    font-family: var(--font-main);
-    font-weight: 800;
-    font-size: 0.95em;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: left;
-}
-
-.more-panel-btn:hover {
-    background: #ffe4f0;
-    border-color: #ffb6d9;
-    transform: translateX(4px);
-}
-
-.more-panel-btn.more-danger {
-    border-color: #ff4d6d;
-    color: #b3243c;
-}
-
-.more-panel-btn.more-danger:hover {
-    background: #ffe0e0;
-    border-color: #ff4d6d;
-}
-
-.more-panel-btn .btn-icon {
-    font-size: 1.5em;
-    line-height: 1;
-}
-
-body.dark-mode .bottom-nav {
-    background: rgba(30, 25, 35, 0.95);
-    border-top-color: rgba(255, 105, 180, 0.3);
-}
-
-body.dark-mode .bottom-nav-btn {
-    color: #ffc0e0;
-}
-
-body.dark-mode .bottom-nav-btn.active {
-    color: #ff8fb8;
-    background: rgba(255, 105, 180, 0.15);
-}
-
-body.dark-mode .more-panel-content {
-    background: linear-gradient(to bottom, #2f2738, #3a3045);
-    border-top-color: #b85683;
-}
-
-body.dark-mode .more-panel-btn {
-    background: #3a3045;
-    border-color: #5c4460;
-    color: #f0e6f5;
 }
 
 /* ============================================================
@@ -4920,46 +4659,6 @@ body.dark-mode .album-toolbar button {
     </style>
 </head>
 <body>
-<!-- Menú lateral (desktop) -->
-<nav class="desktop-sidebar" id="desktopSidebar" aria-label="Menú principal">
-    <button class="desktop-sidebar-btn" data-tab="chat" aria-label="Chat">
-        <span class="nav-icon" id="desktopSidebarChatIcon">💬</span> Chat
-    </button>
-    <button class="desktop-sidebar-btn" data-tab="games" aria-label="Juegos">
-        <span class="nav-icon">🎮</span> Juegos
-    </button>
-    <button class="desktop-sidebar-btn" data-tab="store" aria-label="Tienda">
-        <span class="nav-icon">🛍️</span> Tienda
-    </button>
-    <button class="desktop-sidebar-btn" data-tab="album" aria-label="Álbum">
-        <span class="nav-icon">📖</span> Álbum
-    </button>
-    <div class="desktop-sidebar-section">
-        <div class="desktop-sidebar-section-title">Más</div>
-        <button class="desktop-sidebar-btn" data-tab="conversations" aria-label="Mis conversaciones">
-            <span class="nav-icon">💬</span> Mis conversaciones
-        </button>
-        <button class="desktop-sidebar-btn" data-tab="achievements" aria-label="Mis logros">
-            <span class="nav-icon">🏆</span> Mis logros
-        </button>
-        <button class="desktop-sidebar-btn" data-tab="music" aria-label="Música">
-            <span class="nav-icon">🎵</span> Música
-        </button>
-        <button class="desktop-sidebar-btn" data-tab="darkmode" aria-label="Modo noche">
-            <span class="nav-icon">🌙</span> Modo noche
-        </button>
-        <button class="desktop-sidebar-btn" data-tab="newchat" aria-label="Nueva conversación">
-            <span class="nav-icon">🔄</span> Nueva conversación
-        </button>
-        <button class="desktop-sidebar-btn" data-tab="character" aria-label="Elegir personaje">
-            <span class="nav-icon">👤</span> Elegir personaje
-        </button>
-        <button class="desktop-sidebar-btn desktop-sidebar-danger" data-tab="clear" aria-label="Borrar todo">
-            <span class="nav-icon">🗑️</span> Borrar todo
-        </button>
-    </div>
-</nav>
-
 <!-- Botón para abrir sidebar -->
 <button class="toggle-sidebar-btn" id="toggleSidebarBtn" aria-label="Abrir historial de conversaciones">📋</button>
 
@@ -5706,7 +5405,15 @@ function renderCharSelectors() {
             btn.className = 'char-btn' + (char.id === selectedCharacter ? ' active' : '');
             btn.type = 'button';
             btn.dataset.char = char.id;
-            btn.innerHTML = `<span class="char-emoji">${char.emoji}</span> ${char.name}`;
+            btn.setAttribute('aria-label', `Elegir a ${char.name}`);
+            const icon = document.createElement('span');
+            icon.className = 'char-icon';
+            icon.setAttribute('aria-hidden', 'true');
+            loadCharAvatar(char, icon);
+            const name = document.createElement('span');
+            name.className = 'char-name';
+            name.textContent = char.name;
+            btn.append(icon, name);
             btn.style.borderColor = char.id === selectedCharacter ? char.color : 'rgba(255,255,255,0.5)';
             if (char.id === selectedCharacter) {
                 btn.style.background = '#fff';
@@ -5761,11 +5468,6 @@ function updateCharacterUI() {
     }
     const chatName = document.getElementById('chatCharName');
     if (chatName) chatName.textContent = char.name;
-    // Bottom nav chat icon = character emoji
-    const bottomNavChatIcon = document.getElementById('bottomNavChatIcon');
-    if (bottomNavChatIcon) bottomNavChatIcon.textContent = char.emoji;
-    const desktopSidebarChatIcon = document.getElementById('desktopSidebarChatIcon');
-    if (desktopSidebarChatIcon) desktopSidebarChatIcon.textContent = char.emoji;
     // Update chat welcome message
     const chatWelcomeAvatar = document.getElementById('chatWelcomeAvatar');
     if (chatWelcomeAvatar) {
@@ -6109,8 +5811,14 @@ function loadChatHistory() {
 
         const dateEl = document.createElement('div');
         dateEl.className = 'chat-history-date';
-        const charEmoji = CHARACTERS[chat.character]?.emoji || '🎀';
-        dateEl.textContent = `${charEmoji} ${new Date(parseInt(chat.id, 10)).toLocaleString('es-AR')}`;
+        const chatChar = CHARACTERS[chat.character] || CHARACTERS.kitty;
+        const chatCharIcon = document.createElement('span');
+        chatCharIcon.className = 'chat-history-char';
+        chatCharIcon.setAttribute('aria-hidden', 'true');
+        loadCharAvatar(chatChar, chatCharIcon);
+        const dateText = document.createElement('span');
+        dateText.textContent = new Date(parseInt(chat.id, 10)).toLocaleString('es-AR');
+        dateEl.append(chatCharIcon, dateText);
 
         const previewEl = document.createElement('div');
         previewEl.className = 'chat-history-preview';
@@ -9464,268 +9172,11 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// ============================================================
-// BARRA DE NAVEGACIÓN INFERIOR
-// ============================================================
-function getBottomNav() { return document.getElementById('bottomNav'); }
-function getMorePanel() { return document.getElementById('morePanel'); }
-
-function showBottomNav(show) {
-    const bn = getBottomNav();
-    if (bn) bn.classList.toggle('show', show);
-    document.body.classList.toggle('has-bottom-nav', show);
-}
-
-function showDesktopSidebar(show) {
-    const ds = document.getElementById('desktopSidebar');
-    if (ds) ds.classList.toggle('show', show);
-}
-
-function setBottomNavActive(tab) {
-    document.querySelectorAll('.bottom-nav-btn').forEach(btn => {
-        const isActive = btn.dataset.tab === tab;
-        btn.classList.toggle('active', isActive);
-        if (isActive) btn.setAttribute('aria-current', 'page');
-        else btn.removeAttribute('aria-current');
-    });
-}
-
-function openMorePanel() {
-    const mp = getMorePanel();
-    if (mp) {
-        mp.classList.add('show');
-        // Focus trap: focus first button
-        const firstBtn = mp.querySelector('.more-panel-btn');
-        if (firstBtn) setTimeout(() => firstBtn.focus(), 100);
-        // aria-expanded
-        const moreBtn = document.querySelector('.bottom-nav-btn[data-tab="more"]');
-        if (moreBtn) moreBtn.setAttribute('aria-expanded', 'true');
-    }
-    sounds.send();
-}
-
-function closeMorePanel() {
-    const mp = getMorePanel();
-    if (mp) {
-        mp.classList.remove('show');
-        const moreBtn = document.querySelector('.bottom-nav-btn[data-tab="more"]');
-        if (moreBtn) {
-            moreBtn.setAttribute('aria-expanded', 'false');
-            moreBtn.focus();
-        }
-    }
-    sounds.receive();
-}
-
-function closeMorePanel() {
-    const mp = getMorePanel();
-    if (mp) mp.classList.remove('show');
-    sounds.receive();
-}
-
-// Defer wiring until DOM is fully parsed (bottom nav HTML is after this script)
-setTimeout(() => {
-const morePanelClose = document.getElementById('morePanelClose');
-if (morePanelClose) morePanelClose.addEventListener('click', closeMorePanel);
-const morePanelEl = getMorePanel();
-if (morePanelEl) morePanelEl.addEventListener('click', (e) => {
-    if (e.target === morePanelEl) closeMorePanel();
-});
-
-setTimeout(() => {
-const moreConversationsBtn = document.getElementById('moreConversationsBtn');
-if (moreConversationsBtn) moreConversationsBtn.onclick = () => {
-    closeMorePanel();
-    document.getElementById('toggleSidebarBtn')?.click();
-};
-const moreAchievementsBtn = document.getElementById('moreAchievementsBtn');
-if (moreAchievementsBtn) moreAchievementsBtn.onclick = () => {
-    closeMorePanel();
-    document.getElementById('achievementsBtn')?.click();
-};
-
-const moreMusicBtn = document.getElementById('moreMusicBtn');
-if (moreMusicBtn) moreMusicBtn.onclick = () => {
-    closeMorePanel();
-    document.getElementById('musicBtn')?.click();
-};
-
-const moreDarkModeBtn = document.getElementById('moreDarkModeBtn');
-if (moreDarkModeBtn) moreDarkModeBtn.onclick = () => {
-    closeMorePanel();
-    document.getElementById('darkModeBtn')?.click();
-};
-
-const moreNewChatBtn = document.getElementById('moreNewChatBtn');
-if (moreNewChatBtn) moreNewChatBtn.onclick = () => {
-    closeMorePanel();
-    document.getElementById('resetBtn')?.click();
-};
-
-const moreCharBtn = document.getElementById('moreCharBtn');
-if (moreCharBtn) moreCharBtn.onclick = () => {
-    closeMorePanel();
-    const ids = Object.keys(CHARACTERS);
-    const idx = ids.indexOf(selectedCharacter);
-    const next = ids[(idx + 1) % ids.length];
-    sounds.send();
-    setCharacter(next);
-};
-
-const moreClearBtn = document.getElementById('moreClearBtn');
-if (moreClearBtn) moreClearBtn.onclick = () => {
-    closeMorePanel();
-    document.getElementById('clearBtn')?.click();
-};
-}, 100);
-
-// Wired individually using onclick (more robust than addEventListener for dynamically loaded DOM)
-setTimeout(() => {
-const navChatBtn = document.querySelector('.bottom-nav-btn[data-tab="chat"]');
-const navGamesBtn = document.querySelector('.bottom-nav-btn[data-tab="games"]');
-const navStoreBtn = document.querySelector('.bottom-nav-btn[data-tab="store"]');
-const navAlbumBtn = document.querySelector('.bottom-nav-btn[data-tab="album"]');
-const navMoreBtn = document.querySelector('.bottom-nav-btn[data-tab="more"]');
-
-function navClick(tab) {
-    try { sounds.send(); } catch (e) {}
-    if (tab === 'chat') {
-        welcomeScreen.style.display = 'none';
-        gamesMenu.style.display = 'none';
-        chatContainerEl.style.display = 'flex';
-        setBottomNavActive('chat');
-    } else if (tab === 'games') {
-        welcomeScreen.style.display = 'none';
-        chatContainerEl.style.display = 'none';
-        gamesMenu.style.display = 'flex';
-        setBottomNavActive('games');
-    } else if (tab === 'store') {
-        StoreModule.openStore();
-        setBottomNavActive('store');
-    } else if (tab === 'album') {
-        openAlbum();
-        setBottomNavActive('album');
-    } else if (tab === 'more') {
-        openMorePanel();
-    }
-}
-
-if (navChatBtn) navChatBtn.onclick = () => navClick('chat');
-if (navGamesBtn) navGamesBtn.onclick = () => navClick('games');
-if (navStoreBtn) navStoreBtn.onclick = () => navClick('store');
-if (navAlbumBtn) navAlbumBtn.onclick = () => navClick('album');
-if (navMoreBtn) navMoreBtn.onclick = (e) => { if (e) { e.preventDefault(); } navClick('more'); };
-}, 100);
-
-startChatBtn.addEventListener('click', () => {
-    setTimeout(() => {
-        showBottomNav(true);
-        showDesktopSidebar(true);
-        setBottomNavActive('chat');
-    }, 850);
-});
-
-playGamesBtn.addEventListener('click', () => {
-    setTimeout(() => {
-        showBottomNav(true);
-        showDesktopSidebar(true);
-        setBottomNavActive('games');
-    }, 100);
-});
-
-const welcomeStoreBtnNav = document.getElementById('welcomeStoreBtn');
-if (welcomeStoreBtnNav) welcomeStoreBtnNav.addEventListener('click', () => {
-    setTimeout(() => { showBottomNav(true); showDesktopSidebar(true); setBottomNavActive('store'); }, 100);
-});
-const welcomeAlbumBtnNav = document.getElementById('welcomeAlbumBtn');
-if (welcomeAlbumBtnNav) welcomeAlbumBtnNav.addEventListener('click', () => {
-    setTimeout(() => { showBottomNav(true); showDesktopSidebar(true); setBottomNavActive('album'); }, 100);
-});
-
-const storeBtn = document.getElementById('storeBtn');
-if (storeBtn) storeBtn.addEventListener('click', () => {
-    showBottomNav(true);
-    showDesktopSidebar(true);
-    setBottomNavActive('store');
-});
-const albumBtnNav = document.getElementById('albumBtn');
-if (albumBtnNav) albumBtnNav.addEventListener('click', () => {
-    showBottomNav(true);
-    showDesktopSidebar(true);
-    setBottomNavActive('album');
-});
-
-// Desktop sidebar buttons
-document.querySelectorAll('.desktop-sidebar-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const tab = btn.dataset.tab;
-        try { sounds.send(); } catch (e) {}
-        if (tab === 'chat') {
-            welcomeScreen.style.display = 'none';
-            gamesMenu.style.display = 'none';
-            chatContainerEl.style.display = 'flex';
-            showDesktopSidebar(true);
-        } else if (tab === 'games') {
-            welcomeScreen.style.display = 'none';
-            chatContainerEl.style.display = 'none';
-            gamesMenu.style.display = 'flex';
-            showDesktopSidebar(true);
-        } else if (tab === 'store') {
-            StoreModule.openStore();
-            showDesktopSidebar(true);
-        } else if (tab === 'album') {
-            openAlbum();
-            showDesktopSidebar(true);
-        } else if (tab === 'conversations') {
-            document.getElementById('toggleSidebarBtn')?.click();
-        } else if (tab === 'achievements') {
-            document.getElementById('achievementsBtn')?.click();
-        } else if (tab === 'music') {
-            document.getElementById('musicBtn')?.click();
-        } else if (tab === 'darkmode') {
-            document.getElementById('darkModeBtn')?.click();
-        } else if (tab === 'newchat') {
-            document.getElementById('resetBtn')?.click();
-        } else if (tab === 'character') {
-            const ids = Object.keys(CHARACTERS);
-            const idx = ids.indexOf(selectedCharacter);
-            const next = ids[(idx + 1) % ids.length];
-            setCharacter(next);
-        } else if (tab === 'clear') {
-            document.getElementById('clearBtn')?.click();
-        }
-        document.querySelectorAll('.desktop-sidebar-btn').forEach(b => b.classList.remove('active'));
-        if (['chat', 'games', 'store', 'album'].includes(tab)) {
-            btn.classList.add('active');
-        }
-    });
-});
-
-backToMenuFromChat.addEventListener('click', () => {
-    showBottomNav(false);
-    showDesktopSidebar(false);
-});
-backToMenuFromGames.addEventListener('click', () => {
-    showBottomNav(false);
-    showDesktopSidebar(false);
-});
-}, 0);
-
 // Cerrar modal con tecla Escape
 document.addEventListener('keydown', (e) => {
     const modal = document.getElementById('kawaiModal');
     if (e.key === 'Escape' && modal.style.display === 'flex') {
         closeKawaiModal();
-    }
-    // Cerrar panel "Más" con Escape
-    const morePanel = document.getElementById('morePanel');
-    if (e.key === 'Escape' && morePanel && morePanel.classList.contains('show')) {
-        const mp = morePanel;
-        mp.classList.remove('show');
-        sounds.receive();
-        // Devolver foco al botón "Más"
-        const moreBtn = document.querySelector('.bottom-nav-btn[data-tab="more"]');
-        if (moreBtn) moreBtn.focus();
     }
 });
 
@@ -10610,68 +10061,6 @@ window.addEventListener('load', () => {
     </script>
 
 
-
-<!-- Barra de navegación inferior -->
-<nav class="bottom-nav" id="bottomNav" aria-label="Navegación principal">
-    <button class="bottom-nav-btn" data-tab="chat" aria-label="Chat" title="Chat">
-        <span class="nav-icon" id="bottomNavChatIcon">💬</span>
-        <span>Chat</span>
-    </button>
-    <button class="bottom-nav-btn" data-tab="games" aria-label="Juegos" title="Juegos">
-        <span class="nav-icon">🎮</span>
-        <span>Juegos</span>
-    </button>
-    <button class="bottom-nav-btn" data-tab="store" aria-label="Tienda" title="Tienda">
-        <span class="nav-icon">🛍️</span>
-        <span>Tienda</span>
-    </button>
-    <button class="bottom-nav-btn" data-tab="album" aria-label="Álbum" title="Álbum">
-        <span class="nav-icon">📖</span>
-        <span>Álbum</span>
-    </button>
-    <button class="bottom-nav-btn" data-tab="more" aria-label="Más opciones" title="Más" aria-expanded="false" aria-haspopup="true">
-        <span class="nav-icon">⋯</span>
-        <span>Más</span>
-    </button>
-</nav>
-
-<!-- Panel "Más" -->
-<div class="more-panel" id="morePanel">
-    <div class="more-panel-content">
-        <div class="more-panel-header">
-            <span class="more-panel-title">⋯ Más opciones</span>
-            <button class="more-panel-close" id="morePanelClose" aria-label="Cerrar panel">✖</button>
-        </div>
-        <button class="more-panel-btn" id="moreConversationsBtn">
-            <span class="btn-icon">💬</span>
-            <span>Mis conversaciones</span>
-        </button>
-        <button class="more-panel-btn" id="moreAchievementsBtn">
-            <span class="btn-icon">🏆</span>
-            <span>Mis logros</span>
-        </button>
-        <button class="more-panel-btn" id="moreMusicBtn">
-            <span class="btn-icon">🎵</span>
-            <span>Música</span>
-        </button>
-        <button class="more-panel-btn" id="moreDarkModeBtn">
-            <span class="btn-icon">🌙</span>
-            <span>Modo noche</span>
-        </button>
-        <button class="more-panel-btn" id="moreNewChatBtn">
-            <span class="btn-icon">🔄</span>
-            <span>Nueva conversación</span>
-        </button>
-        <button class="more-panel-btn" id="moreCharBtn">
-            <span class="btn-icon">👤</span>
-            <span>Elegir personaje</span>
-        </button>
-        <button class="more-panel-btn more-danger" id="moreClearBtn">
-            <span class="btn-icon">🗑️</span>
-            <span>Borrar todo</span>
-        </button>
-    </div>
-</div>
 
 <!-- Modal Kawaii Personalizado -->
 <div id="kawaiModal" class="kawai-modal-overlay" style="display: none;">
