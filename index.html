@@ -3988,9 +3988,9 @@ body.dark-mode .welcome-text {
 }
 
 .char-btn {
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    background: rgba(255, 255, 255, 0.25);
-    color: #fff;
+    border: 2px solid rgba(255, 182, 217, 0.9);
+    background: rgba(255, 255, 255, 0.78);
+    color: #8a3b62;
     border-radius: 20px;
     padding: 8px 14px;
     font-family: var(--font-main);
@@ -4005,7 +4005,7 @@ body.dark-mode .welcome-text {
 }
 
 .char-btn:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: #fff;
     transform: translateY(-2px);
 }
 
@@ -4656,6 +4656,435 @@ body.dark-mode .album-toolbar button {
         max-height: 92vh;
     }
 }
+
+/* ============================================================
+   ENCABEZADO COMPACTO Y FORMATO DE CHAT
+   ============================================================ */
+.header-stats {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.control-label {
+    display: none;
+}
+
+.header-menu-btn {
+    display: none;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-family: var(--font-main);
+    font-size: 1.4em;
+    font-weight: 900;
+    line-height: 1;
+    padding: 0;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    touch-action: manipulation;
+}
+
+.header-menu-btn:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 5px rgba(255, 20, 147, 0.35);
+}
+
+/* Computadora: menú completo y compacto */
+@media (min-width: 1025px) {
+    .header-controls {
+        flex-wrap: nowrap;
+    }
+
+    .control-btn {
+        padding: 8px 11px;
+    }
+
+    .reset-btn {
+        padding: 8px 13px;
+    }
+
+    .welcome-content {
+        padding: 44px 34px;
+    }
+
+    .welcome-kitty {
+        width: 160px;
+        height: 160px;
+    }
+
+    .welcome-title {
+        font-size: 2.5em;
+    }
+
+    .welcome-text {
+        font-size: 1.15em;
+        margin-bottom: 28px;
+    }
+
+    .start-chat-btn {
+        padding: 16px 40px;
+        font-size: 1.15em;
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 1200px) {
+    header {
+        padding: 10px 12px;
+        gap: 6px;
+    }
+
+    .header-content {
+        margin-left: 46px;
+    }
+
+    header h1 {
+        font-size: 1.3em;
+    }
+
+    .subtitle {
+        font-size: 0.78em;
+    }
+
+    .chat-char-name {
+        display: none;
+    }
+
+    .chat-char-indicator {
+        padding: 3px;
+    }
+
+    .friendship-level,
+    .coin-display {
+        padding: 6px 10px;
+        font-size: 0.82em;
+    }
+
+    .control-btn {
+        padding: 7px 9px;
+        font-size: 0.95em;
+    }
+
+    .reset-btn {
+        padding: 7px 10px;
+        font-size: 0.85em;
+    }
+}
+
+/* Celular y tablet: encabezado de chat y menú desplegable */
+@media (max-width: 1024px) {
+    body {
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0;
+        height: 100dvh;
+        max-height: 100dvh;
+        border: none;
+    }
+
+    header {
+        display: grid;
+        grid-template-columns: auto auto minmax(0, 1fr) auto;
+        grid-template-areas:
+            "back avatar title menu"
+            "stats stats stats stats";
+        align-items: center;
+        gap: 6px 8px;
+        padding: calc(8px + env(safe-area-inset-top)) 10px 8px;
+        text-align: left;
+        flex-wrap: nowrap;
+    }
+
+    header .back-to-menu-btn {
+        grid-area: back;
+        position: static;
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        font-size: 1.1em;
+        background: rgba(255, 255, 255, 0.22);
+        border-color: rgba(255, 255, 255, 0.55);
+        color: #fff;
+        box-shadow: none;
+    }
+
+    .chat-char-indicator {
+        grid-area: avatar;
+        padding: 2px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.18);
+        border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .chat-char-indicator .char-avatar {
+        width: 34px;
+        height: 34px;
+        font-size: 1.1em;
+        border-width: 2px;
+    }
+
+    .chat-char-name {
+        display: none;
+    }
+
+    .header-content {
+        grid-area: title;
+        margin-left: 0;
+        min-width: 0;
+        flex: initial;
+    }
+
+    header h1 {
+        font-size: 1.02em;
+        margin-bottom: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .subtitle {
+        font-size: 0.7em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .header-stats {
+        grid-area: stats;
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .friendship-level,
+    .coin-display {
+        padding: 3px 10px;
+        font-size: 0.72em;
+        gap: 5px;
+        border-width: 1px;
+        box-shadow: none;
+    }
+
+    .friendship-hearts,
+    .coin-icon {
+        font-size: 1em;
+    }
+
+    .header-menu-btn {
+        display: flex;
+        grid-area: menu;
+    }
+
+    .header-controls {
+        position: absolute;
+        top: calc(100% + 6px);
+        right: 8px;
+        width: min(250px, calc(100vw - 16px));
+        max-height: calc(100dvh - 110px);
+        overflow-y: auto;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        flex-wrap: nowrap;
+        gap: 4px;
+        padding: 8px;
+        background: #fff;
+        border: 1px solid #ffb6d9;
+        border-radius: 16px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        z-index: 60;
+    }
+
+    .header-controls.open {
+        display: flex;
+    }
+
+    .header-controls .control-btn,
+    .header-controls .reset-btn {
+        width: 100%;
+        min-height: 44px;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+        font-size: 1em;
+        font-weight: 800;
+        color: #b3243c;
+        background: #fff0f6;
+        border: 1px solid #ffd0e4;
+        border-radius: 12px;
+        box-shadow: none;
+        transform: none;
+        text-align: left;
+    }
+
+    .header-controls .control-btn:hover,
+    .header-controls .reset-btn:hover {
+        background: #ffe0ee;
+        color: #ff1493;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .header-controls .control-label {
+        display: inline;
+    }
+
+    .header-controls .achievements-btn {
+        position: relative;
+    }
+
+    .header-controls .achievements-badge {
+        position: static;
+        margin-left: auto;
+        width: 22px;
+        height: 22px;
+        border-width: 0;
+        font-size: 0.72em;
+        flex-shrink: 0;
+    }
+
+    .chat-messages {
+        padding: 8px 0;
+    }
+
+    .welcome-message {
+        padding: 20px 14px;
+        margin: 0 10px;
+        border-radius: 18px;
+    }
+
+    .welcome-message p {
+        font-size: 0.95em;
+        line-height: 1.5;
+    }
+
+    .privacy-notice {
+        font-size: 0.62em;
+        line-height: 1.35;
+        padding: 4px 10px;
+    }
+
+    .chat-toolbar {
+        padding: 6px 10px 0;
+        gap: 6px;
+    }
+
+    .mode-btn {
+        padding: 6px 11px;
+        font-size: 0.78em;
+    }
+
+    .mode-hint {
+        display: none;
+    }
+
+    #messageForm.input-container {
+        padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+        gap: 6px;
+    }
+
+    .input-row {
+        gap: 6px;
+    }
+
+    #attachBtn {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+    }
+
+    #messageInput {
+        min-height: 44px;
+        padding: 10px 14px;
+        font-size: 16px;
+    }
+
+    #sendBtn {
+        min-width: auto;
+        padding: 11px 16px;
+        font-size: 0.92em;
+        min-height: 44px;
+    }
+
+    /* Bienvenida compacta */
+    .welcome-screen {
+        align-items: flex-start;
+        overflow-y: auto;
+        padding: calc(16px + env(safe-area-inset-top)) 12px calc(16px + env(safe-area-inset-bottom));
+    }
+
+    .welcome-content {
+        width: 100%;
+        max-width: 440px;
+        padding: 24px 16px;
+        border-radius: 24px;
+        margin: auto 0;
+    }
+
+    .welcome-kitty {
+        width: 120px;
+        height: 120px;
+        font-size: 3em;
+        margin-bottom: 14px;
+    }
+
+    .welcome-title {
+        font-size: 1.8em;
+        margin-bottom: 10px;
+    }
+
+    .welcome-text {
+        font-size: 0.95em;
+        margin-bottom: 16px;
+        line-height: 1.45;
+    }
+
+    .char-selector {
+        gap: 6px;
+        margin: 12px 0;
+    }
+
+    .char-btn {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+
+    .char-btn .char-icon {
+        width: 26px;
+        height: 26px;
+    }
+
+    .start-chat-btn {
+        padding: 13px 26px;
+        font-size: 1em;
+        border-width: 3px;
+        box-shadow: 0 6px 18px rgba(255, 77, 109, 0.4);
+        animation: none;
+        max-width: 100%;
+    }
+}
     </style>
 </head>
 <body>
@@ -4763,26 +5192,28 @@ body.dark-mode .album-toolbar button {
                 <div class="char-avatar" id="chatCharAvatar"></div>
                 <span class="chat-char-name" id="chatCharName"></span>
             </div>
-            <div class="friendship-level" id="friendshipLevel">
-                <span class="friendship-hearts">💕</span>
-                <span id="friendshipText">Nivel 1</span>
-            </div>
-            <button class="coin-display" id="coinDisplay" title="Tus monedas" aria-label="Ver tus monedas">
-                <span class="coin-icon">🪙</span>
-                <span class="coin-amount">0</span>
-            </button>
-            <div class="header-controls">
-                <button class="control-btn" id="storeBtn" title="Tienda" aria-label="Abrir la tienda">🛍️</button>
-                <button class="control-btn" id="albumBtn" title="Álbum de recuerdos" aria-label="Abrir el álbum de recuerdos">📖</button>
-                <button class="control-btn achievements-btn" id="achievementsBtn" title="Logros" aria-label="Ver logros desbloqueados">
-                    🏆
-                    <span class="achievements-badge">0</span>
+            <div class="header-stats">
+                <div class="friendship-level" id="friendshipLevel">
+                    <span class="friendship-hearts">💕</span>
+                    <span id="friendshipText">Nivel 1</span>
+                </div>
+                <button class="coin-display" id="coinDisplay" title="Tus monedas" aria-label="Ver tus monedas">
+                    <span class="coin-icon">🪙</span>
+                    <span class="coin-amount">0</span>
                 </button>
-                <button class="control-btn" id="musicBtn" title="Música" aria-label="Activar o desactivar música de fondo">🎵</button>
-                <button class="control-btn" id="darkModeBtn" title="Modo oscuro" aria-label="Cambiar entre modo claro y oscuro">🌙</button>
-                <button class="reset-btn" id="resetBtn" title="Nueva conversación" aria-label="Iniciar una nueva conversación">🔄</button>
-                <button class="reset-btn" id="clearBtn" title="Borrar todo" aria-label="Borrar todas las conversaciones y reiniciar nivel">🗑️</button>
             </div>
+            <div class="header-controls" id="headerControls">
+                <button class="control-btn" id="storeBtn" title="Tienda" aria-label="Abrir la tienda">🛍️<span class="control-label">Tienda</span></button>
+                <button class="control-btn" id="albumBtn" title="Álbum de recuerdos" aria-label="Abrir el álbum de recuerdos">📖<span class="control-label">Álbum</span></button>
+                <button class="control-btn achievements-btn" id="achievementsBtn" title="Logros" aria-label="Ver logros desbloqueados">
+                    🏆<span class="control-label">Mis logros</span><span class="achievements-badge">0</span>
+                </button>
+                <button class="control-btn" id="musicBtn" title="Música" aria-label="Activar o desactivar música de fondo"><span class="btn-emoji" id="musicBtnIcon">🎵</span><span class="control-label">Música</span></button>
+                <button class="control-btn" id="darkModeBtn" title="Modo oscuro" aria-label="Cambiar entre modo claro y oscuro"><span class="btn-emoji" id="darkModeBtnIcon">🌙</span><span class="control-label">Modo noche</span></button>
+                <button class="reset-btn" id="resetBtn" title="Nueva conversación" aria-label="Iniciar una nueva conversación">🔄<span class="control-label">Nueva conversación</span></button>
+                <button class="reset-btn" id="clearBtn" title="Borrar todo" aria-label="Borrar todas las conversaciones y reiniciar nivel">🗑️<span class="control-label">Borrar todo</span></button>
+            </div>
+            <button class="header-menu-btn" id="headerMenuBtn" type="button" aria-label="Abrir menú" title="Abrir menú" aria-expanded="false" aria-controls="headerControls">⋮</button>
         </header>
 
         <div id="apiBanner" role="status" aria-live="polite">
@@ -5982,7 +6413,8 @@ function loadAchievements() {
 // Aplicar modo oscuro si está guardado
 if (darkMode) {
     document.body.classList.add('dark-mode');
-    darkModeBtn.textContent = '☀️';
+    const darkIcon = document.getElementById('darkModeBtnIcon');
+    if (darkIcon) darkIcon.textContent = '☀️';
 }
 
 // Sistema de música de fondo
@@ -6030,14 +6462,16 @@ backgroundMusic = initBackgroundMusic();
 
 // Actualizar estado de música
 if (musicEnabled) {
-    musicBtn.textContent = '🎵';
+    const musicIcon = document.getElementById('musicBtnIcon');
+    if (musicIcon) musicIcon.textContent = '🎵';
     try {
         backgroundMusic.start();
     } catch (e) {
         console.log('Audio no disponible');
     }
 } else {
-    musicBtn.textContent = '🔇';
+    const musicIcon = document.getElementById('musicBtnIcon');
+    if (musicIcon) musicIcon.textContent = '🔇';
 }
 
 // Toggle música
@@ -6053,10 +6487,12 @@ darkModeBtn.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
     
     if (darkMode) {
-        darkModeBtn.textContent = '☀️';
+        const darkIcon = document.getElementById('darkModeBtnIcon');
+    if (darkIcon) darkIcon.textContent = '☀️';
         sounds.receive();
     } else {
-        darkModeBtn.textContent = '🌙';
+        const darkIcon = document.getElementById('darkModeBtnIcon');
+        if (darkIcon) darkIcon.textContent = '🌙';
         sounds.send();
     }
 });
@@ -10018,6 +10454,58 @@ setInterval(cleanupLocalStorage, 24 * 60 * 60 * 1000);
 // FIN FASE 7
 // ============================================================
 
+
+// Menú compacto del encabezado (celular)
+(function setupHeaderMenu() {
+    const menuBtn = document.getElementById('headerMenuBtn');
+    const controls = document.getElementById('headerControls');
+    if (!menuBtn || !controls) return;
+
+    const closeMenu = (returnFocus) => {
+        controls.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        if (returnFocus) menuBtn.focus();
+    };
+
+    menuBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const isOpen = controls.classList.toggle('open');
+        menuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        if (isOpen) {
+            const first = controls.querySelector('button');
+            if (first) setTimeout(() => first.focus(), 50);
+        }
+    });
+
+    controls.addEventListener('click', (event) => {
+        if (event.target.closest('button')) closeMenu(false);
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!controls.classList.contains('open')) return;
+        if (!controls.contains(event.target) && !menuBtn.contains(event.target)) {
+            closeMenu(false);
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && controls.classList.contains('open')) {
+            closeMenu(true);
+        }
+        if (event.key !== 'Tab' || !controls.classList.contains('open')) return;
+        const focusable = [...controls.querySelectorAll('button')].filter((btn) => !btn.disabled);
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    });
+})();
 
 // Inicializar sistemas al cargar
 window.addEventListener('load', () => {
